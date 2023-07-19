@@ -1,0 +1,31 @@
+FROM node:gallium-alpine
+
+# Variables.
+ARG UID
+ARG GID
+
+# Update y upgrade, además, añado paquetes.
+RUN apk -U upgrade
+RUN apk add vim
+
+# Añado directorio de trabajo.
+WORKDIR /angular
+
+# Creo directorio y permisos.
+RUN mkdir /angular/node_modules 
+RUN chown -R "${UID}":"${GID}" /angular
+
+# Instalo última version de npm.
+RUN npm install -g npm@latest
+
+# Instalo CLI de Angular.
+RUN npm install -g @angular/cli@latest
+
+# Expongo el puerto de trabajo.
+EXPOSE 4200
+
+# Defino usuario.
+USER node
+
+# Ejecuto terminal.
+CMD ["/bin/sh", "-c", "tail -f /dev/null"]

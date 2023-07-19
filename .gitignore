@@ -1,0 +1,44 @@
+# Logs
+
+*.log
+npm-debug-log*
+
+# Dependency directories
+
+**/node_modules
+
+# Visual studio code
+
+.vscode
+
+# Docker
+
+.dockerignore
+
+# Angular
+
+.angular
+
+# dotenv environment variables file
+
+**/*.env
+
+# Directories
+
+**/certs*
+**/db*
+public/dist
+api/dist
+oauth/dist
+
+# Files
+
+**/*.txt
+**/*.pem
+**/nodemon.json
+# /**/*.md
+
+
+
+
+

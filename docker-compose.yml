@@ -1,0 +1,149 @@
+version: '3.8'
+services:
+  #an-mysql:
+  #  build: ./mysql
+  #  container_name: 'an-mysql'
+  #  secrets:
+  #    - mysqlroot
+  #  environment:
+  #    - MYSQL_DATABASE=antodo16022018
+  #    - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mysqlroot
+  #  volumes:
+  #    - ./mysql/db-mysql:/var/lib/mysql ## No poner bind mounts, como está aquí, para bases de datos, se accede desde el host, mejor volumes que estan gestionados por docker y ase pueden compartir datos con otros contenedores.
+  #  restart: always
+  #  logging:
+  #    driver: 'json-file'
+  #    options:
+  #      max-size: '100k'
+  #      max-file: '5'
+  #an-mongo:
+  #  build: ./mongo
+  #  container_name: 'an-mongo'
+  #  secrets:
+  #    - mongoroot
+  #  environment:
+  #    - MONGO_INITDB_ROOT_USERNAME=root
+  #    - MONGO_INITDB_ROOT_PASSWORD_FILE=/run/secrets/mongoroot
+  #  volumes:
+  #    - ./mongo/db-mongo:/data/db
+  #  restart: always
+  #  logging:
+  #    driver: 'json-file'
+  #    options:
+  #      max-size: '100k'
+  #      max-file: '5'
+  #an-redis:
+  #  build: ./redis
+  #  container_name: 'an-redis'
+  #  secrets:
+  #    - redisuser
+  #  environment: 
+  #    - REDIS_PASS_FILE=/run/secrets/redisuser
+  #  volumes:
+  #    - ./redis/db-redis:/data
+  #  command: ["sh", "-c", "exec redis-server /etc/redis/redis.conf --requirepass \"$$(cat $$REDIS_PASS_FILE)\""]
+  #  restart: always
+  #  logging:
+  #    driver: 'json-file'
+  #    options:
+  #      max-size: '100k'
+  #      max-file: '5'
+  #an-api:
+  #  build: ./api
+  #  container_name: 'an-api'
+  #  volumes:
+  #    - ./api:/api
+  #    - /api/node_modules
+  #  restart: always
+  #  logging:
+  #    driver: 'json-file'
+  #    options:
+  #      max-size: '100k'
+  #      max-file: '5'
+  #an-oauth:
+  #  build: ./oauth
+  #  container_name: 'an-oauth'
+  #  volumes: 
+  #    - ./oauth:/oauth
+  #    - /oauth/node_modules
+  #  restart: always
+  #  logging:
+  #    driver: 'json-file'
+  #    options:
+  #      max-size: '100k'
+  #      max-file: '5'
+  #an-cdn:
+  #  build: ./cdn
+  #  container_name: 'an-cdn'
+  #  volumes: 
+  #    - ./cdn:/cdn
+  #    - /cdn/node_modules
+  #  restart: always
+  #  logging:
+  #    driver: 'json-file'
+  #    options:
+  #      max-size: '100k'
+  #      max-file: '5'
+  an-public:
+    build: 
+      context: './public'
+      args:
+        - 'UID=${UID}'
+        - 'GID=${GID}'
+    container_name: 'an-public'
+    env_file:
+      - '.env'
+    ports:
+      - 4200:4200
+    volumes: 
+      - ./public:/angular
+      - /angular/node_modules
+  #  restart: always
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '100k'
+        max-file: '5'
+  an-todo:
+    build: 
+      context: './todo'
+      args:
+        - 'UID=${UID}'
+        - 'GID=${GID}'
+    container_name: 'an-todo'
+    env_file:
+      - '.env'
+    volumes:
+      - distribucion:/usr/share/nginx/html
+    ports:
+      - 80:80
+      - 443:443
+      - 3000:3000
+      #- 3306:3306
+      #- 27017:27017
+      #- 6379:6379
+      - 5000:5000
+      #- 2000:2000
+    #restart: always
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '100k'
+        max-file: '5'
+volumes:
+  distribucion:
+    driver: local
+    driver_opts:
+      type: none
+      device: "./public/dist/angular"
+      o: bind
+
+#volumes: ## Named Volume principalmente, por ejemplo bases de datos que utilizo. Los demás son Bind Mount.
+#  backup:
+#secrets:
+#  mysqlroot:
+#    file: mysqlroot.txt
+#  redisuser:
+#    file: redisuser.txt
+#  mongoroot:
+#    file: mongoroot.txt

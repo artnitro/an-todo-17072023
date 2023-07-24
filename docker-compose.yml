@@ -1,23 +1,33 @@
 version: '3.8'
 services:
-  #an-mysql:
-  #  build: ./mysql
-  #  container_name: 'an-mysql'
-  #  secrets:
-  #    - mysqlroot
-  #  environment:
-  #    - MYSQL_DATABASE=antodo16022018
-  #    - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mysqlroot
-  #  volumes:
-  #    - ./mysql/db-mysql:/var/lib/mysql ## No poner bind mounts, como está aquí, para bases de datos, se accede desde el host, mejor volumes que estan gestionados por docker y ase pueden compartir datos con otros contenedores.
-  #  restart: always
-  #  logging:
-  #    driver: 'json-file'
-  #    options:
-  #      max-size: '100k'
-  #      max-file: '5'
+  an-mysql:
+    build:
+      context: './mysql'
+      args:
+        - 'UID=${UID}'
+        - 'GID=${GID}'
+    container_name: 'an-mysql'
+    env_file:
+      - '.env'
+    secrets:
+      - mysqlroot
+    environment:
+      - MYSQL_DATABASE=antodo17072023
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mysqlroot
+    volumes:
+      - mysql:/var/lib/mysql
+    restart: always
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '100k'
+        max-file: '5'
   #an-mongo:
-  #  build: ./mongo
+  #  build:
+  #    context: './mongo'
+  #    args:
+  #      - 'UID=${UID}'
+  #      - 'GID=${GID}'
   #  container_name: 'an-mongo'
   #  secrets:
   #    - mongoroot
@@ -25,7 +35,7 @@ services:
   #    - MONGO_INITDB_ROOT_USERNAME=root
   #    - MONGO_INITDB_ROOT_PASSWORD_FILE=/run/secrets/mongoroot
   #  volumes:
-  #    - ./mongo/db-mongo:/data/db
+  #    - mongodb:/data/db
   #  restart: always
   #  logging:
   #    driver: 'json-file'
@@ -97,6 +107,7 @@ services:
       - 4200:4200
     volumes: 
       - ./public:/angular
+      - distribucion:/angular/dist/angular
       - /angular/node_modules
   #  restart: always
     logging:
@@ -119,7 +130,7 @@ services:
       - 80:80
       - 443:443
       - 3000:3000
-      #- 3306:3306
+      - 3306:3306
       #- 27017:27017
       #- 6379:6379
       - 5000:5000
@@ -132,18 +143,18 @@ services:
         max-file: '5'
 volumes:
   distribucion:
-    driver: local
-    driver_opts:
-      type: none
-      device: "./public/dist/angular"
-      o: bind
-
-#volumes: ## Named Volume principalmente, por ejemplo bases de datos que utilizo. Los demás son Bind Mount.
-#  backup:
-#secrets:
-#  mysqlroot:
-#    file: mysqlroot.txt
-#  redisuser:
-#    file: redisuser.txt
+  mysql:
+#  mongodb:
+  # mysql:
+#    driver: local
+#    driver_opts:
+#      type: none
+#      device: "./mysql/db-mysql"
+#      o: bind
+secrets:
+  mysqlroot:
+    file: mysqlroot.txt
 #  mongoroot:
 #    file: mongoroot.txt
+#  redisuser:
+#    file: redisuser.txt

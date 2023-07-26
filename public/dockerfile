@@ -6,7 +6,7 @@ ARG GID
 
 # Update y upgrade, además, añado paquetes.
 RUN apk -U upgrade
-RUN apk add vim
+RUN apk add neovim
 
 # Añado directorio de trabajo.
 WORKDIR /angular

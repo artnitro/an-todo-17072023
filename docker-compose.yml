@@ -29,6 +29,8 @@ services:
         - 'UID=${UID}'
         - 'GID=${GID}'
     container_name: 'an-mongo'
+    env_file:
+      - '.env'
     secrets:
       - mongoroot
     environment:
@@ -43,14 +45,20 @@ services:
         max-size: '100k'
         max-file: '5'
   #an-redis:
-  #  build: ./redis
+  #  build:
+  #    context: './redis'
+  #    args:
+  #      - 'UID=${UID}'
+  #      - 'GID=${GID}'
   #  container_name: 'an-redis'
+  #  env_file:
+  #    - '.env'
   #  secrets:
   #    - redisuser
   #  environment: 
   #    - REDIS_PASS_FILE=/run/secrets/redisuser
   #  volumes:
-  #    - ./redis/db-redis:/data
+  #    - redisdb:/data
   #  command: ["sh", "-c", "exec redis-server /etc/redis/redis.conf --requirepass \"$$(cat $$REDIS_PASS_FILE)\""]
   #  restart: always
   #  logging:
@@ -132,7 +140,7 @@ services:
       - 3000:3000
       - 3306:3306
       - 27017:27017
-      #- 6379:6379
+      - 6379:6379
       - 5000:5000
       #- 2000:2000
     #restart: always
@@ -145,6 +153,7 @@ volumes:
   distribucion:
   mysql:
   mongodb:
+  redisdb:
   # mysql:
 #    driver: local
 #    driver_opts:
@@ -156,5 +165,5 @@ secrets:
     file: mysqlroot.txt
   mongoroot:
     file: mongoroot.txt
-#  redisuser:
-#    file: redisuser.txt
+  redisuser:
+    file: redisuser.txt

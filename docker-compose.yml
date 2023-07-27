@@ -44,28 +44,28 @@ services:
       options:
         max-size: '100k'
         max-file: '5'
-  #an-redis:
-  #  build:
-  #    context: './redis'
-  #    args:
-  #      - 'UID=${UID}'
-  #      - 'GID=${GID}'
-  #  container_name: 'an-redis'
-  #  env_file:
-  #    - '.env'
-  #  secrets:
-  #    - redisuser
-  #  environment: 
-  #    - REDIS_PASS_FILE=/run/secrets/redisuser
-  #  volumes:
-  #    - redisdb:/data
-  #  command: ["sh", "-c", "exec redis-server /etc/redis/redis.conf --requirepass \"$$(cat $$REDIS_PASS_FILE)\""]
-  #  restart: always
-  #  logging:
-  #    driver: 'json-file'
-  #    options:
-  #      max-size: '100k'
-  #      max-file: '5'
+  an-redis:
+    build:
+      context: './redis'
+      args:
+        - 'UID=${UID}'
+        - 'GID=${GID}'
+    container_name: 'an-redis'
+    env_file:
+      - '.env'
+    secrets:
+      - redisuser
+    environment: 
+      - REDIS_PASS_FILE=/run/secrets/redisuser
+    volumes:
+      - redisdb:/data
+    command: ["sh", "-c", "exec redis-server /etc/redis/redis.conf --requirepass \"$$(cat $$REDIS_PASS_FILE)\""]
+    restart: always
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '100k'
+        max-file: '5'
   #an-api:
   #  build: ./api
   #  container_name: 'an-api'

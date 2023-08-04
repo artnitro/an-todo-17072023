@@ -78,18 +78,24 @@ services:
   #    options:
   #      max-size: '100k'
   #      max-file: '5'
-  #an-oauth:
-  #  build: ./oauth
-  #  container_name: 'an-oauth'
-  #  volumes: 
-  #    - ./oauth:/oauth
-  #    - /oauth/node_modules
+  an-oauth:
+    build:
+      context: './oauth'
+      args:
+        - 'UID=${UID}'
+        - 'GID=${GID}'
+    container_name: 'an-oauth'
+    env_file:
+      - '.env'
+    volumes: 
+      - ./oauth:/oauth
+      - /oauth/node_modules
   #  restart: always
-  #  logging:
-  #    driver: 'json-file'
-  #    options:
-  #      max-size: '100k'
-  #      max-file: '5'
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '100k'
+        max-file: '5'
   #an-cdn:
   #  build: ./cdn
   #  container_name: 'an-cdn'

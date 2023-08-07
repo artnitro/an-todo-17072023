@@ -18,6 +18,7 @@ npm-debug-log*
 # Angular
 
 .angular
+public/src/environments/environment.development.ts
 
 # dotenv environment variables file
 

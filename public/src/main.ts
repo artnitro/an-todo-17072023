@@ -1,13 +1,30 @@
 import { enableProdMode } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideRouter } from '@angular/router';
 
-import { AppModule } from './app/app.module';
 import { environment } from './environments/environment.development';
+import { AppComponent } from './app/app.component';
+import { AppRoutes } from './app/app.routes';
 
+/**
+ * Comprobamos si se está ejecutando en modo PRODUCCIÓN.
+ */
 
-if (environment.production) {
-  enableProdMode();
-}
+( environment.production ) ? enableProdMode() : console.info('an-INFO: Angular se ejecuta en modo desarrollo.');
 
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.error(err));
+/**
+ * Arrancamos la aplicación mediante Standalone Componnents.
+ */
+
+( async (): Promise<void> => {
+  try {
+    await bootstrapApplication(AppComponent, {
+      providers: [
+        provideRouter(AppRoutes),
+      ]
+    });
+    console.info('an-INFO: Comienza la aplicacion AN-TOOO-17072023.');
+  } catch (err) {
+    console.error('an-ERROR:', err);
+  }
+})();

@@ -1,3 +1,4 @@
 export const environment = {
-  production: false
+  production: false,
+  bgImage: '../assets/img/bg-desktop.jpg',
 };

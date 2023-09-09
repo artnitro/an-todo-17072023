@@ -23,7 +23,7 @@ import { AppRoutes } from './app/app.routes';
         provideRouter(AppRoutes),
       ]
     });
-    console.info('an-INFO: Comienza la aplicacion AN-TOOO-17072023.');
+    console.info('an-INFO: Comienza la aplicacion AN-TODO-17072023.');
   } catch (err) {
     console.error('an-ERROR:', err);
   }

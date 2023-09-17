@@ -5,8 +5,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        roboto: ['roboto-regular', 'sans-serif'],
-        oswald: ['oswald-regular', 'cursive'],
+        roboto: ['roboto-regular'],
+        oswald: ['oswald-regular'],
       }
     },
   },

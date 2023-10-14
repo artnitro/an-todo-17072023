@@ -5,23 +5,62 @@
 
 /* You can add global styles to this file, and also import other style files */
 
+@layer base {
 
-// Fuentes que vamos a utilizar en la aplicación.
+  /**
+  * FUENTES (provisionales).
+  */
 
-@font-face {
-	font-family: 'roboto-regular';
-	src: url('./assets/fonts/roboto-regular.eot'); // IE9 compat
-	src: url('./assets/fonts/roboto-regular.eot?#iefix') format('embedded-opentype'), // IE8 and below
-	  url('./assets/fonts/roboto-regular.woff') format('woff'), // standards
-		url('./assets/fonts/roboto-regular.ttf') format('truetype'), // Safari, Android, iOS
-		url('./assets/fonts/roboto-regular.svg#roboto-regular') format('svg'); // legacy iOS
-}
+  @font-face {
+  	font-family: 'roboto-regular';
+  	src: url('./assets/fonts/roboto-regular.eot'); // IE9 compat
+  	src: url('./assets/fonts/roboto-regular.eot?#iefix') format('embedded-opentype'), // IE8 and below
+  	  url('./assets/fonts/roboto-regular.woff') format('woff'), // standards
+  		url('./assets/fonts/roboto-regular.ttf') format('truetype'), // Safari, Android, iOS
+  		url('./assets/fonts/roboto-regular.svg#roboto-regular') format('svg'); // legacy iOS
+  }
 
-@font-face {
-	font-family: 'oswald-regular';
-	src: url('./assets/fonts/oswald-regular.eot'); // IE9 compat
-	src: url('./assets/fonts/oswald-regular.eot?#iefix') format('embedded-opentype'), // IE8 and below
-	  url('./assets/fonts/oswald-regular.woff') format('woff'), // standards
-		url('./assets/fonts/oswald-regular.ttf') format('truetype'), // Safari, Android, iOS
-		url('./assets/fonts/oswald-regular.svg#oswald-regular') format('svg'); // legacy iOS
+  @font-face {
+  	font-family: 'oswald-regular';
+  	src: url('./assets/fonts/oswald-regular.eot'); // IE9 compat
+  	src: url('./assets/fonts/oswald-regular.eot?#iefix') format('embedded-opentype'), // IE8 and below
+  	  url('./assets/fonts/oswald-regular.woff') format('woff'), // standards
+  		url('./assets/fonts/oswald-regular.ttf') format('truetype'), // Safari, Android, iOS
+  		url('./assets/fonts/oswald-regular.svg#oswald-regular') format('svg'); // legacy iOS
+  }
+
+  /**
+  * ETIQUETAS.
+  */
+
+  // Estilo base para INPUT.
+
+  input {
+    @apply bg-transparent border-0 m-0 p-0 pl-3 mb-1 border-b-2 w-11/12 focus:outline-none focus:ring-0 #{!important};
+  }
+
+  /**
+  * CLASES.
+  */
+
+  // Estilo base para animación INPUT y LABEL.
+
+  .an-input {
+    @apply placeholder-transparent transition-colors ease-out delay-100 duration-500 border-b-gray-500 focus:border-b-blue-500;
+  }
+
+  .an-label {
+    @apply left-3 top-0 text-xs transition-all peer-placeholder-shown:-top-7 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs;
+  }
+
+  /**
+  * FORMAS GEOMÉTRICAS.
+  */
+
+  // Círculo.
+
+  .an-circulo {
+    @apply flex shrink-0 grow-0 items-center justify-center rounded-full;
+  }
+
 }

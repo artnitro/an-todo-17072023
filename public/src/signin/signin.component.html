@@ -14,9 +14,10 @@
           autocomplete="off"
           placeholder="Email"
           spellcheck="false"
-          class="block peer an-input"/> 
-        <label for="email" class="relative an-label">Email</label>
-        <div class="flex relative gap-2 items-center -top-5">
+          class="block peer an-input"
+          [ngStyle]="{'border-color': hasError['email'] ? colors['red'] : null}"/> 
+        <label for="email" class="relative an-label" [ngStyle]="{'color': hasError['email'] ? colors['red'] : null}">Email</label>
+        <div class="flex relative gap-2 items-center -top-5 invisible" [ngStyle]="{'visibility': hasError['email'] ? 'visible' : null}">
           <div class="an-circulo text-xs ml-40 w-4 h-4 text-white bg-red-600">!</div>
           <div class="text-xs text-red-600">Error en Email</div>
         </div>
@@ -29,9 +30,10 @@
           autocomplete="off" 
           placeholder="Password"
           spellcheck="false"
-          class="block peer an-input"/>
-        <label for="password" class="relative an-label">Password</label>
-        <div class="flex relative gap-2 items-center -top-5">
+          class="block peer an-input"
+          [ngStyle]="{'border-color': hasError['password'] ? colors['red'] : null}"/>
+        <label for="password" class="relative an-label" [ngStyle]="{'color': hasError['password'] ? colors['red'] : null}">Password</label>
+        <div class="flex relative gap-2 items-center -top-5 invisible" [ngStyle]="{'visibility': hasError['password'] ? 'visible' : null}">
           <div class="an-circulo text-xs ml-36 w-4 h-4 text-white bg-red-600">!</div>
           <div class="text-xs text-red-600">Error en Password</div>
         </div>

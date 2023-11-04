@@ -8,6 +8,30 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 export abstract class FormFieldsAbstract {
 
   /**
+   * @description First name validator.
+   * @returns FormControl validator
+   */
+  firstName() {
+    return new FormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(15)
+    ]);
+  }
+
+  /**
+   * @description Last name validators.
+   * @returns FormControl validator
+   */
+  lastName() {
+    return new FormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(30)
+    ]);
+  }
+  
+  /**
    * @description Email validator.
    * @returns FormControl validator
    */

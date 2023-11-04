@@ -1,0 +1,92 @@
+<an-todo-card-session [title]="title">
+  <div class="mt-2 py-5 w-80 bg-white/50">
+    <form [formGroup]="signupForm" novalidate>
+      <div class="font-roboto text-sm pl-4">
+        <input 
+          id="firstName" 
+          type="text"
+          formControlName="firstName" 
+          autocomplete="off"
+          placeholder="Nombre"
+          spellcheck="false"
+          class="block peer an-input"
+          [ngStyle]="{'border-color': hasError['firstName'] ? colors['red'] : null}"/> 
+        <label for="firstName" class="relative an-label" [ngStyle]="{'color': hasError['firstName'] ? colors['red'] : null}">Nombre</label>
+        <div class="flex relative gap-2 items-center -top-5 invisible" [ngStyle]="{'visibility': hasError['firstName'] ? 'visible' : null}">
+          <div class="an-circulo text-xs ml-40 w-4 h-4 text-white bg-red-600">!</div>
+          <div class="text-xs text-red-600">Error en Nombre</div>
+        </div>
+      </div>
+      <div class="font-roboto text-sm pl-4">
+        <input 
+          id="lastName" 
+          type="text"
+          formControlName="lastName" 
+          autocomplete="off"
+          placeholder="Apellidos"
+          spellcheck="false"
+          class="block peer an-input"
+          [ngStyle]="{'border-color': hasError['lastName'] ? colors['red'] : null}"/> 
+        <label for="lastName" class="relative an-label" [ngStyle]="{'color': hasError['lastName'] ? colors['red'] : null}">Apellidos</label>
+        <div class="flex relative gap-2 items-center -top-5 invisible" [ngStyle]="{'visibility': hasError['lastName'] ? 'visible' : null}">
+          <div class="an-circulo text-xs ml-40 w-4 h-4 text-white bg-red-600">!</div>
+          <div class="text-xs text-red-600">Error en Apellidos</div>
+        </div>
+      </div>
+      <div class="font-roboto text-sm pl-4">
+        <input 
+          id="email" 
+          type="text"
+          formControlName="email" 
+          autocomplete="off"
+          placeholder="Email"
+          spellcheck="false"
+          class="block peer an-input"
+          [ngStyle]="{'border-color': hasError['email'] ? colors['red'] : null}"/> 
+        <label for="email" class="relative an-label" [ngStyle]="{'color': hasError['email'] ? colors['red'] : null}">Email</label>
+        <div class="flex relative gap-2 items-center -top-5 invisible" [ngStyle]="{'visibility': hasError['email'] ? 'visible' : null}">
+          <div class="an-circulo text-xs ml-40 w-4 h-4 text-white bg-red-600">!</div>
+          <div class="text-xs text-red-600">Error en Email</div>
+        </div>
+      </div>
+      <div class="font-roboto text-sm pl-4">
+        <input 
+          id="password" 
+          type="password" 
+          formControlName="password" 
+          autocomplete="off" 
+          placeholder="Password"
+          spellcheck="false"
+          class="block peer an-input"
+          [ngStyle]="{'border-color': hasError['password'] ? colors['red'] : null}"/>
+        <label for="password" class="relative an-label" [ngStyle]="{'color': hasError['password'] ? colors['red'] : null}">Password</label>
+        <div class="flex relative gap-2 items-center -top-5 invisible" [ngStyle]="{'visibility': hasError['password'] ? 'visible' : null}">
+          <div class="an-circulo text-xs ml-36 w-4 h-4 text-white bg-red-600">!</div>
+          <div class="text-xs text-red-600">Error en Password</div>
+        </div>
+      </div>
+      <div class="font-roboto text-sm pl-4">
+        <input 
+          id="confirmPassword" 
+          type="password" 
+          formControlName="confirmPassword" 
+          autocomplete="off" 
+          placeholder="Confirma Password"
+          spellcheck="false"
+          class="block peer an-input"
+          [ngStyle]="{'border-color': hasError['confirmPassword'] ? colors['red'] : null}"/>
+        <label for="confirmPassword" class="relative an-label" [ngStyle]="{'color': hasError['confirmPassword'] ? colors['red'] : null}">Confirma Password</label>
+        <div class="flex relative gap-2 items-center -top-5 invisible" [ngStyle]="{'visibility': hasError['confirmPassword'] ? 'visible' : null}">
+          <div class="an-circulo text-xs ml-32 w-4 h-4 text-white bg-red-600">!</div>
+          <div class="text-xs text-red-600">Error Confirma Password</div>
+        </div>
+      </div>
+      <div class="font-roboto text-sm pl-4">
+        <a routerLink="/signin" class="block my-4">Iniciar sesión</a>
+      </div>
+    </form>
+  </div>
+  <div class="mt-3 w-[76px] bg-white/50 transition-colors hover:bg-white">
+    <button class="pl-4 py-1" type="button" (click)="checkForm()">Enviar</button>
+  </div>
+</an-todo-card-session>

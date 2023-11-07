@@ -3,14 +3,15 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
-import { APOLLO_NAMED_OPTIONS, ApolloModule, NamedOptions } from 'apollo-angular';
+import { APOLLO_OPTIONS, APOLLO_NAMED_OPTIONS, ApolloModule } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
-import { InMemoryCache } from '@apollo/client/core';
 
 import { environment } from './environments/environment.development';
 import { AppComponent } from './app/app.component';
 import { AppRoutes } from './app/app.routes';
-import { SERVICES } from './shared/config'; 
+import { SERVICES } from './shared/config';
+import { OauthNamedGraphql } from './shared/graphql/oauth-named.graphql';
+import { ApiGraphql } from './shared/graphql/api.graphql';
 
 
 /**
@@ -30,24 +31,13 @@ import { SERVICES } from './shared/config';
         importProvidersFrom(HttpClientModule, ApolloModule),
         provideRouter(AppRoutes),
         {
+          provide: APOLLO_OPTIONS,
+          useFactory: ApiGraphql,
+          deps: [HttpLink],
+        },
+        {
           provide: APOLLO_NAMED_OPTIONS,
-          useFactory(httpLink: HttpLink): NamedOptions {
-            return {
-              // default: { Con este valor, toma esta dirección por defecto. }
-              api: {
-                cache: new InMemoryCache(),
-                link: httpLink.create({
-                  uri: SERVICES['api'],
-                }),
-              },
-              oauth: {
-                cache: new InMemoryCache(),
-                link: httpLink.create({
-                  uri: SERVICES['oauth'],
-                }),
-              },
-            };
-          },
+          useFactory: OauthNamedGraphql, 
           deps: [HttpLink],
         }, 
       ]

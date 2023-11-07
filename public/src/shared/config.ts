@@ -10,7 +10,7 @@ import { Icolors, Iservices } from "./interfaces/config.interface";
  */
 
 export const COLORS: Icolors = {
-  red: 'rgb(225 29 72)'
+  red: 'rgb(225 29 72)',
 }
 
 /**
@@ -19,6 +19,7 @@ export const COLORS: Icolors = {
 
 export const SERVICES: Iservices = {
   api: 'https://api.antodo.local:3000/api/v1/',
-  oauth: 'https://oauth.antodo.local:5000/oauth/v1/'
+  oauth: 'https://oauth.antodo.local:5000/oauth/v1/',
+  wss: 'wss://api.antodo.local:3000/api/v1/',
 }
 

@@ -4,6 +4,10 @@
 
 // TODO: Definir ruta donde recoger token, está asignado provisional como null.
 
+// NOTE: Cuando esté operativo, comprobar si es necesario definir el token en connectionParamns ya que está definido anteriormente en authLink y creo que no hace falta esa definición.
+
+// NOTE: Si por nuevas versiones de Apollo Client apareciesen errores en ApolloLink.split() y ApolloLink.from(), sustituirlas por los métodos estáticos split() y from() en @apollo/client/core.
+
 import { onError } from '@apollo/client/link/error';
 import { HttpLink } from 'apollo-angular/http';
 import { ApolloLink, InMemoryCache, ApolloClientOptions } from '@apollo/client/core';
@@ -50,7 +54,7 @@ export function ApiGraphql(httpLink: HttpLink): ApolloClientOptions<any> {
 
   const wss = new GraphQLWsLink(createClient({
     url: SERVICES['wss'],
-    connectionParams: () => { // NOTE: Puede que no haga falta, definido anteriormente en authLink, probar cuando está operativo.
+    connectionParams: () => { 
       const bearer =  token ? `Bearer ${token}` : '';
       return {
         Authorization: bearer,

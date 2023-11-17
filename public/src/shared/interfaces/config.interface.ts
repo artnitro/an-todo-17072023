@@ -7,6 +7,6 @@ export interface Icolors {
   [key: string]: any
 }
 
-export interface Iservices {
+export interface Ibgimages {
   [key: string]: string
 }

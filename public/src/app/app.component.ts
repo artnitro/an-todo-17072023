@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NgStyle } from '@angular/common';
 
-import { environment } from 'src/environments/environment.development';
+import { BGIMAGES } from 'src/shared/config';
 
 
 @Component({
@@ -14,9 +14,9 @@ import { environment } from 'src/environments/environment.development';
 })
 export class AppComponent {
 
-  // Establezco imagen de fondo por defecto de la aplicación.
+  // Establezco imagen de fondo (provisional) de la aplicación.
 
-  bgImage: string = environment.bgImage;
+  bgImage: string = BGIMAGES['global'];
   
 }
 

@@ -6,7 +6,8 @@ import { NamedOptions } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
 
-import { SERVICES } from '../config';
+import { environment } from '../../environments/environment.development';
+
 
 export function OauthNamedGraphql( httpLink: HttpLink): NamedOptions {
 
@@ -14,7 +15,7 @@ export function OauthNamedGraphql( httpLink: HttpLink): NamedOptions {
     oauth: {
       cache: new InMemoryCache(),
       link: httpLink.create({
-        uri: SERVICES['oauth'],
+        uri: environment.oauth,
         withCredentials: true,
       }),
     }

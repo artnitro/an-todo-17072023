@@ -15,7 +15,8 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { createClient } from 'graphql-ws';
 
-import { SERVICES } from '../config';
+import  { environment } from '../../environments/environment.development';
+
 
 export function ApiGraphql(httpLink: HttpLink): ApolloClientOptions<any> {
 
@@ -46,14 +47,14 @@ export function ApiGraphql(httpLink: HttpLink): ApolloClientOptions<any> {
    // Configuración http link.
 
    const http = httpLink.create({
-    uri: SERVICES['api'],
+    uri: environment.api,
     withCredentials: true,
   });
 
   // Configuración socket link.
 
   const wss = new GraphQLWsLink(createClient({
-    url: SERVICES['wss'],
+    url: environment.wss,
     connectionParams: () => { 
       const bearer =  token ? `Bearer ${token}` : '';
       return {

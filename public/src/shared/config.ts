@@ -1,9 +1,9 @@
 /**
- * Variables globales de configuración de la aplicación.
+ * Configuración de variables de la aplicación.
  */
 
 
-import { Icolors, Iservices } from "./interfaces/config.interface";
+import { Icolors, Ibgimages } from "./interfaces/config.interface";
 
 /**
  * Colores.
@@ -14,12 +14,9 @@ export const COLORS: Icolors = {
 }
 
 /**
- * Servicios.
+ * Imagen de fondo (provisional).
  */
 
-export const SERVICES: Iservices = {
-  api: 'https://api.antodo.local:3000/api/v1/',
-  oauth: 'https://oauth.antodo.local:5000/oauth/v1/',
-  wss: 'wss://api.antodo.local:3000/api/v1/',
+export const BGIMAGES: Ibgimages = {
+  global: '../assets/img/bg-desktop.jpg',
 }
-

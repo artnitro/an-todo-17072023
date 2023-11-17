@@ -9,7 +9,6 @@ import { HttpLink } from 'apollo-angular/http';
 import { environment } from './environments/environment.development';
 import { AppComponent } from './app/app.component';
 import { AppRoutes } from './app/app.routes';
-import { SERVICES } from './shared/config';
 import { OauthNamedGraphql } from './shared/graphql/oauth-named.graphql';
 import { ApiGraphql } from './shared/graphql/api.graphql';
 

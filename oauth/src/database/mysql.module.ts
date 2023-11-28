@@ -28,9 +28,7 @@ import { DataSource } from 'typeorm';
         database: configService.get('DB_MYSQL'),
         poolSize: 5,
         logging: ['query', 'error'],
-        entities: [
-          __dirname + '/../**/*.entity{.ts,.js}',
-        ],
+        autoLoadEntities: true,
         synchronize: true,
       }),
       dataSourceFactory: async (options) => {

@@ -1,12 +1,12 @@
+/**
+ * Módulo central de la aplicación.
+ */
+
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-
 import { MysqlModule } from './database/mysql.module';
-import { UserModule } from './database/user/user.module';
-//import { OauthModule } from './oauth/oauth.module';
+import { GraphModule } from './database/graph.module';
  
 
 @Module({
@@ -15,10 +15,7 @@ import { UserModule } from './database/user/user.module';
       isGlobal: true,
     }),
     MysqlModule,
-    UserModule,
-  //  OauthModule,
+    GraphModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

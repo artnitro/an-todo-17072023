@@ -1,8 +1,8 @@
 FROM node:18-alpine
 
 # Variables.
-ARG UID
-ARG GID
+#ARG UID
+#ARG GID
 
 # Update y upgrade, además, añado paquetes.
 RUN apk -U upgrade
@@ -13,7 +13,10 @@ WORKDIR /oauth
 
 # Creo directorio y permisos.
 RUN mkdir /oauth/node_modules 
-RUN chown -R "${UID}":"${GID}" /oauth
+#RUN chown -R "${UID}":"${GID}" /oauth
+
+# Copio ficheros por si los hubiera.
+COPY . /oauth
 
 # Instalo última version de npm.
 RUN npm install -g npm@latest
@@ -25,7 +28,7 @@ RUN npm install -g @nestjs/cli@latest
 EXPOSE 5000
 
 # Defino usuario.
-USER node
+#USER node
 
 # Ejecuto terminal.
 CMD ["/bin/sh", "-c", "tail -f /dev/null"]

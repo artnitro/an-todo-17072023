@@ -3,12 +3,12 @@ services:
   an-mysql:
     build:
       context: './mysql'
-      args:
-        - 'UID=${UID}'
-        - 'GID=${GID}'
+  #    args:
+  #      - 'UID=${UID}'
+  #      - 'GID=${GID}'
     container_name: 'an-mysql'
-    env_file:
-      - '.env'
+  #  env_file:
+  #    - '.env'
     secrets:
       - mysqlroot
     environment:
@@ -16,7 +16,7 @@ services:
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mysqlroot
     volumes:
       - mysql:/var/lib/mysql
-    restart: always
+  #  restart: always
     logging:
       driver: 'json-file'
       options:
@@ -25,12 +25,12 @@ services:
   an-mongo:
     build:
       context: './mongo'
-      args:
-        - 'UID=${UID}'
-        - 'GID=${GID}'
+  #    args:
+  #      - 'UID=${UID}'
+  #      - 'GID=${GID}'
     container_name: 'an-mongo'
-    env_file:
-      - '.env'
+  #  env_file:
+  #    - '.env'
     secrets:
       - mongoroot
     environment:
@@ -38,7 +38,7 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD_FILE=/run/secrets/mongoroot
     volumes:
       - mongodb:/data/db
-    restart: always
+  #  restart: always
     logging:
       driver: 'json-file'
       options:
@@ -47,12 +47,12 @@ services:
   an-redis:
     build:
       context: './redis'
-      args:
-        - 'UID=${UID}'
-        - 'GID=${GID}'
+  #    args:
+  #      - 'UID=${UID}'
+  #      - 'GID=${GID}'
     container_name: 'an-redis'
-    env_file:
-      - '.env'
+  #  env_file:
+  #    - '.env'
     secrets:
       - redisuser
     environment: 
@@ -60,7 +60,7 @@ services:
     volumes:
       - redisdb:/data
     command: ["sh", "-c", "exec redis-server /etc/redis/redis.conf --requirepass \"$$(cat $$REDIS_PASS_FILE)\""]
-    restart: always
+  #  restart: always
     logging:
       driver: 'json-file'
       options:
@@ -81,12 +81,12 @@ services:
   an-oauth:
     build:
       context: './oauth'
-      args:
-        - 'UID=${UID}'
-        - 'GID=${GID}'
+  #    args:
+  #      - 'UID=${UID}'
+  #      - 'GID=${GID}'
     container_name: 'an-oauth'
-    env_file:
-      - '.env'
+  #  env_file:
+  #    - '.env'
     volumes: 
       - ./oauth:/oauth
       - /oauth/node_modules
@@ -111,17 +111,17 @@ services:
   an-public:
     build: 
       context: './public'
-      args:
-        - 'UID=${UID}'
-        - 'GID=${GID}'
+    #  args:
+    #    - 'UID=${UID}'
+    #    - 'GID=${GID}'
     container_name: 'an-public'
-    env_file:
-      - '.env'
+    #env_file:
+    #  - '.env'
     ports:
       - 4200:4200
     volumes: 
       - ./public:/angular
-      - distribucion:/angular/dist/angular
+     # - distribucion:/angular/dist/angular
       - /angular/node_modules
   #  restart: always
     logging:
@@ -132,14 +132,15 @@ services:
   an-todo:
     build: 
       context: './todo'
-      args:
-        - 'UID=${UID}'
-        - 'GID=${GID}'
+      #args:
+      #  - 'UID=${UID}'
+      #  - 'GID=${GID}'
     container_name: 'an-todo'
-    env_file:
-      - '.env'
+    #env_file:
+    #  - '.env'
     volumes:
-      - distribucion:/usr/share/nginx/html
+      - ./public/dist/angular:/usr/share/nginx/html
+    #  - distribucion:/usr/share/nginx/html
     ports:
       - 80:80
       - 443:443
@@ -156,11 +157,11 @@ services:
         max-size: '100k'
         max-file: '5'
 volumes:
-  distribucion:
+#  distribucion:
   mysql:
   mongodb:
   redisdb:
-  # mysql:
+#  mysql:
 #    driver: local
 #    driver_opts:
 #      type: none

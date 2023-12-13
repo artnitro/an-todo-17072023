@@ -1,8 +1,8 @@
-FROM node:gallium-alpine
+FROM node:18-alpine
 
 # Variables.
-ARG UID
-ARG GID
+#ARG UID
+#ARG GID
 
 # Update y upgrade, además, añado paquetes.
 RUN apk -U upgrade
@@ -13,7 +13,11 @@ WORKDIR /angular
 
 # Creo directorio y permisos.
 RUN mkdir /angular/node_modules 
-RUN chown -R "${UID}":"${GID}" /angular
+#RUN chown -R "${UID}":"${GID}" /angular
+
+# Copio ficheros por si los hubiera.
+#COPY --chown="${UID}":"${GID}" . /angular
+COPY . /angular
 
 # Instalo última version de npm.
 RUN npm install -g npm@latest
@@ -25,7 +29,7 @@ RUN npm install -g @angular/cli@latest
 EXPOSE 4200
 
 # Defino usuario.
-USER node
+#USER node
 
 # Ejecuto terminal.
 CMD ["/bin/sh", "-c", "tail -f /dev/null"]

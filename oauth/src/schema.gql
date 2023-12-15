@@ -1,0 +1,28 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Mutation {
+  """Consulta para crear un usuario"""
+  createUser(userInput: UserInput!): Token!
+}
+
+type Query {
+  """Consulta de prueba para la aplicación."""
+  getHello: String!
+
+  """Consulta para ver si es usuario o no de la aplicación"""
+  isUser(email: String!, password: String!): Token!
+}
+
+type Token {
+  access_token: String!
+}
+
+input UserInput {
+  email: String!
+  firstName: String!
+  lastName: String!
+  nickName: String!
+  password: String!
+}

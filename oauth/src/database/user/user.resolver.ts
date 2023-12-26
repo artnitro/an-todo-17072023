@@ -2,8 +2,6 @@
  *  Resolver para User
  */
 
-// TODO: Validar campos de entrada para Mutation: createUser.
-
 import { UnauthorizedException, NotAcceptableException, HttpException , Inject} from '@nestjs/common';
 import { Resolver, Query, Mutation, Args, CONTEXT } from '@nestjs/graphql';
 import { ConfigService } from '@nestjs/config';

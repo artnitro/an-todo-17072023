@@ -2,6 +2,13 @@
  * Módulo de configuración de GraphQL.
  */
 
+// NOTE: Si es necesario para obtener mayor información de los errores producidos en 
+// desarrollo, comentar el método formatError de GraphQLModule y descomentar cuando 
+// no sea necesario. Puende ocasionar errores en en frontend, sdebido a que se espera
+// una respuesta formateada para los errores así.
+// NOTE: La propiedad message, de formatError, siempre tiene que retornarse ya que 
+// causa error sino se retorna.
+
 import { join } from 'path';
 
 import { Module } from '@nestjs/common';
@@ -21,6 +28,13 @@ import { UserModule } from './user/user.module';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'), 
       sortSchema: true,
       playground: true,
+      formatError: ({ message, extensions }) => {
+        const originalError = extensions.originalError;
+        return {
+          message,
+          originalError,
+        }
+      },
     })
   ],
   controllers: [],

@@ -2,10 +2,9 @@
  * Componente Signin.
  */
 
-// TODO: Eliminar Subscription
-// TODO: Ver dónde guardar el Token de usuario.
+// TODO: Eliminar Subscription.
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, } from '@angular/core';
 import { NgStyle } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
@@ -13,7 +12,7 @@ import { RouterLink, Router } from '@angular/router';
 import { Apollo } from 'apollo-angular';
 
 import { Subscription } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 import { FormFieldsAbstract } from 'src/shared/Forms/form-fields.abstract';
 import { CardSessionComponent } from 'src/components/card-session/card-session.component'; 
@@ -79,8 +78,8 @@ export class SigninComponent extends FormFieldsAbstract implements OnInit {
         .pipe(map(result => result.data.isUser))
         .subscribe({
           next: (isUser) => {
-            console.log('AN-LOG: Datos de la consulta: ', isUser.access_token);
-            
+            user.set(isUser.access_token);
+            this.router.navigate(['/dashboard']);
           },
           error: (err) => {
             Object

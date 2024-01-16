@@ -3,9 +3,11 @@
  */
 
 import { Component, OnInit, effect } from '@angular/core';
+
+import { JwtHelperService } from '@auth0/angular-jwt';
+
 import { user } from 'src/shared/signals/user.signal';
 
-// TODO: Comprobar que el token es válido.
 
 @Component({
   selector: 'app-dashboard',
@@ -16,17 +18,22 @@ import { user } from 'src/shared/signals/user.signal';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(){
+  jwtHelper: JwtHelperService = new JwtHelperService();
+  tokenData!: any;
+
+  constructor() {
 
     effect( () => {
       console.log('AN-LOG: El actual valor de Signal: ', user());
+      this.tokenData = this.jwtHelper.decodeToken(user());
+      console.log('AN-LOG: Email del token: ', this.tokenData.email)
     });
 
   }
 
   ngOnInit(): void {
 
-    console.info('AN-INFO: Ejecutando DashboardComponent.');
+    console.info('AN-INFO: Ejecutando DashboardComponent');
 
   }
 

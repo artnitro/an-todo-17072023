@@ -30,6 +30,17 @@ export abstract class FormFieldsAbstract {
       Validators.maxLength(30)
     ]);
   }
+
+  /**
+   * @description Nick name validators.
+   * @returns FormControl validator.
+   */
+  nickName() {
+    return new FormControl('', [
+      Validators.minLength(3),
+      Validators.maxLength(15)
+    ])
+  }
   
   /**
    * @description Email validator.

@@ -2,7 +2,7 @@
  * Componente Signin.
  */
 
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgStyle } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
@@ -19,6 +19,7 @@ import { COLORS } from 'src/shared/config';
 import { GET_IS_USER } from './signin.query';
 import { SigninService } from './signin.service';
 import { user } from 'src/shared/signals/user.signal';
+import { Unsubscribe } from 'src/decorators/unsubscribe.decorator';
 
 
 @Component({
@@ -33,7 +34,8 @@ import { user } from 'src/shared/signals/user.signal';
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.scss']
 })
-export class SigninComponent extends FormFieldsAbstract implements OnInit, OnDestroy {
+@Unsubscribe()
+export class SigninComponent extends FormFieldsAbstract implements OnInit {
 
   signinForm!: FormGroup;
   subscription$: Subscription = new Subscription();
@@ -68,7 +70,7 @@ export class SigninComponent extends FormFieldsAbstract implements OnInit, OnDes
     this.hasError = this.formService.hasFieldError(this.signinForm);
 
     if ( Object.keys(this.hasError).length === 0 ) {
-      this.subscription$.add(this.signinService
+      this.subscription$ = this.signinService
         .isUser$({
           email: this.signinForm.value.email,
           password: this.signinForm.value.password,
@@ -94,15 +96,8 @@ export class SigninComponent extends FormFieldsAbstract implements OnInit, OnDes
                 }
               });
           }
-        })
-      );
+        });
     }
-
-  }
-
-  ngOnDestroy(): void {
-
-    this.subscription$.unsubscribe();
 
   }
   

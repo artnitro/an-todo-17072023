@@ -35,6 +35,22 @@
       </div>
       <div class="font-roboto text-sm pl-4">
         <input 
+          id="nickName" 
+          type="text"
+          formControlName="nickName" 
+          autocomplete="off"
+          placeholder="nickName"
+          spellcheck="false"
+          class="block peer an-input"
+          [ngStyle]="{'border-color': hasError['nickName'] ? colors['red'] : null}"/> 
+        <label for="nickName" class="relative an-label" [ngStyle]="{'color': hasError['nickName'] ? colors['red'] : null}">Apodo</label>
+        <div class="flex relative gap-2 items-center -top-5 invisible" [ngStyle]="{'visibility': hasError['nickName'] ? 'visible' : null}">
+          <div class="an-circulo text-xs ml-40 w-4 h-4 text-white bg-red-600">!</div>
+          <div class="text-xs text-red-600">Error en Apodo</div>
+        </div>
+      </div>
+      <div class="font-roboto text-sm pl-4">
+        <input 
           id="email" 
           type="text"
           formControlName="email" 

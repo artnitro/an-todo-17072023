@@ -43,6 +43,7 @@ export class SignupComponent extends FormFieldsAbstract implements OnInit {
     this.signupForm = this.fb.group({
       firstName: this.firstName(),
       lastName: this.lastName(),
+      nickName: this.nickName(),
       email: this.email(),
       password: this.password(),
       confirmPassword: this.password(),

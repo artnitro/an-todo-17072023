@@ -21,4 +21,18 @@ export class FormService {
       .reduce((o, key) => ({ ...o, [key]: true }), {});
 
   }
+
+  /**
+   * @description Asigna a todos los campos de formulario el valor true
+   * @param form FormGroup
+   * @returns Object
+   */
+  hasFormError(form: FormGroup): object {
+
+    return Object.keys(form.controls)
+      .filter(value => form.controls[value])
+      .reduce((o, key) => ({ ...o, [key]: true }), {});
+
+  }
+
 }

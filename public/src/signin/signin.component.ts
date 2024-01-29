@@ -87,12 +87,10 @@ export class SigninComponent extends FormFieldsAbstract implements OnInit {
               .filter( element => {
                 const { originalError } = err.graphQLErrors[element];
                 if ( originalError.statusCode === 400 || originalError.statusCode === 401 ) {
-                  this.signinForm.controls['email'].setValue('');
-                  this.signinForm.controls['password'].setValue('');
-                  this.hasError = {
-                    email: true,
-                    password: true
-                  }
+                  Object
+                    .keys(this.signinForm.controls)
+                    .filter(value => this.signinForm.controls[value].setValue(''));
+                  this.hasError = this.formService.hasFormError(this.signinForm);
                 }
               });
           }

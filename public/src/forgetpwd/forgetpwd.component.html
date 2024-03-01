@@ -21,6 +21,9 @@
           <div class="text-xs text-red-600">Error en Email</div>
         </div>
       </div>
+      <div class="font-roboto text-sm pl-4" [ngStyle]="{'display': showEmail ? 'block' : 'none'}">
+        <a routerLink="/signin" class="block my-4">Iniciar sesión</a>
+      </div>
       <div class="font-roboto text-sm pl-4" [ngStyle]="{'display': showPanel ? 'block' : 'none'}">
         <p>Recibirás un mensaje a esa dirección de correo para poder modificar tu contraseña.</p>
       </div>

@@ -10,6 +10,7 @@ import { RouterLink, Router} from '@angular/router';
 import { FormFieldsAbstract } from 'src/shared/Forms/form-fields.abstract';
 import { CardSessionComponent } from 'src/components/card-session/card-session.component';
 import { COLORS } from 'src/shared/config';
+import { ConfirmPasswordValidator } from 'src/shared/Forms/validators/confirm-password.validator';
 
 
 @Component({
@@ -31,7 +32,10 @@ export class ForgetpwdComponent extends FormFieldsAbstract implements OnInit {
   title: string = '¿Olvidaste la contraseña?';
   hasError: {[key: string]: any} = {};
   colors: {[key: string]: any} = COLORS;
-  showPanel: boolean = true;
+  showEmail: boolean = true;
+  showPanel: boolean = false;
+  showPassword: boolean = false;
+  showSend: boolean = true;
 
   constructor(
     private fb: FormBuilder,
@@ -44,6 +48,10 @@ export class ForgetpwdComponent extends FormFieldsAbstract implements OnInit {
 
     this.forgetForm = this.fb.group({
       email: this.email(),
+      password: this.password(),
+      confirmPassword: this.password(),
+    }, {
+      validator: ConfirmPasswordValidator.confirmPassword
     })
 
   }

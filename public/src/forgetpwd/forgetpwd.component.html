@@ -4,7 +4,7 @@
 
 <an-todo-card-session [title]="title">
   <div class="mt-2 py-5 w-80 bg-white/50">
-    <form [formGroup]="forgetForm" novalidate>
+    <form [formGroup]="forgetEmailForm" novalidate>
       <div class="font-roboto text-sm pl-4" [ngStyle]="{'display': showEmail ? 'block' : 'none'}">
         <input 
           id="email" 
@@ -14,15 +14,15 @@
           placeholder="Email"
           spellcheck="false"
           class="block peer an-input"
-          [ngStyle]="{'border-color': hasError['email'] ? colors['red'] : null}"/> 
-        <label for="email" class="relative an-label" [ngStyle]="{'color': hasError['email'] ? colors['red'] : null}">Email</label>
-        <div class="flex relative gap-2 items-center -top-5 invisible" [ngStyle]="{'visibility': hasError['email'] ? 'visible' : null}">
+          [ngStyle]="{'border-color': hasEmailError['email'] ? colors['red'] : null}"/> 
+        <label for="email" class="relative an-label" [ngStyle]="{'color': hasEmailError['email'] ? colors['red'] : null}">Email</label>
+        <div class="flex relative gap-2 items-center -top-5 invisible" [ngStyle]="{'visibility': hasEmailError['email'] ? 'visible' : null}">
           <div class="an-circulo text-xs ml-40 w-4 h-4 text-white bg-red-600">!</div>
           <div class="text-xs text-red-600">Error en Email</div>
         </div>
       </div>
       <div class="font-roboto text-sm pl-4" [ngStyle]="{'display': showEmail ? 'block' : 'none'}">
-        <a routerLink="/signin" class="block my-4">Iniciar sesión</a>
+        <a routerLink="/signin" class="block mt-4">Iniciar sesión</a>
       </div>
       <div class="font-roboto text-sm pl-4" [ngStyle]="{'display': showPanel ? 'block' : 'none'}">
         <p>Recibirás un mensaje a esa dirección de correo para poder modificar tu contraseña.</p>

@@ -27,10 +27,11 @@ import { ConfirmPasswordValidator } from 'src/shared/Forms/validators/confirm-pa
 })
 export class ForgetpwdComponent extends FormFieldsAbstract implements OnInit {
 
-  forgetForm!: FormGroup;
+  forgetEmailForm!: FormGroup;
+  // forgetPasswordForm!: FormGroup; //// Poner para el nuevo formulario del password.
 
   title: string = '¿Olvidaste la contraseña?';
-  hasError: {[key: string]: any} = {};
+  hasEmailError: {[key: string]: any} = {};
   colors: {[key: string]: any} = COLORS;
   showEmail: boolean = true;
   showPanel: boolean = false;
@@ -46,13 +47,9 @@ export class ForgetpwdComponent extends FormFieldsAbstract implements OnInit {
 
     console.info('an-INNFO: Ejecutando ForgetpwdComponent.');
 
-    this.forgetForm = this.fb.group({
+    this.forgetEmailForm = this.fb.group({
       email: this.email(),
-      password: this.password(),
-      confirmPassword: this.password(),
-    }, {
-      validator: ConfirmPasswordValidator.confirmPassword
-    })
+    });
 
   }
 

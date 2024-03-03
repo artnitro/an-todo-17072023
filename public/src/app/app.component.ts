@@ -7,8 +7,8 @@ import { map } from 'rxjs/operators';
 import { BGIMAGES } from 'src/shared/config';
 import { AppService } from './app.service';
 import { user } from 'src/shared/signals/user.signal';
+import { Unsubscribe } from 'src/decorators/unsubscribe.decorator';
 
-// TODO:  Eliminar Subscription.
 
 @Component({
   selector: 'an-todo-root',
@@ -17,9 +17,11 @@ import { user } from 'src/shared/signals/user.signal';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
+@Unsubscribe()
 export class AppComponent implements OnInit {
 
   querySubscription!: Subscription;
+  querySubscription$: Subscription = new Subscription();
 
   constructor(
     private renderer: Renderer2,
@@ -38,7 +40,7 @@ export class AppComponent implements OnInit {
 
     // Gestiono datos de usuario.
 
-    this.querySubscription = this.appService
+    this.querySubscription$ = this.appService
       .refreshUser$()
       .pipe(map(result => result.data.refreshUser))
       .subscribe({

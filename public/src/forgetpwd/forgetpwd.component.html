@@ -5,7 +5,7 @@
 <an-todo-card-session [title]="title">
   <div class="mt-2 py-5 w-80 bg-white/50">
     <form [formGroup]="forgetEmailForm" novalidate>
-      <div class="font-roboto text-sm pl-4" [ngStyle]="{'display': showEmail ? 'block' : 'none'}">
+      <div class="font-roboto text-sm pl-4" *ngIf="showEmail">
         <input 
           id="email" 
           type="text"
@@ -21,15 +21,15 @@
           <div class="text-xs text-red-600">Error en Email</div>
         </div>
       </div>
-      <div class="font-roboto text-sm pl-4" [ngStyle]="{'display': showEmail ? 'block' : 'none'}">
+      <div class="font-roboto text-sm pl-4" *ngIf="showEmail">
         <a routerLink="/signin" class="block mt-4">Iniciar sesión</a>
       </div>
-      <div class="font-roboto text-sm pl-4" [ngStyle]="{'display': showPanel ? 'block' : 'none'}">
+      <div class="font-roboto text-sm pl-4" *ngIf="showPanel">
         <p>Recibirás un mensaje a esa dirección de correo para poder modificar tu contraseña.</p>
       </div>
     </form>
   </div>
-  <div class="mt-3 w-[76px] bg-white/50 transition-colors hover:bg-white" [ngStyle]="{'display': showSend ? 'block' : 'none'}">
+  <div class="mt-3 w-[76px] bg-white/50 transition-colors hover:bg-white" *ngIf="showSend">
     <button class="pl-4 py-1" type="button" (click)="checkForm()">Enviar</button>
   </div>
 </an-todo-card-session>

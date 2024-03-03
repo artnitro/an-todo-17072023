@@ -3,7 +3,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { NgStyle } from '@angular/common';
+import { NgStyle, NgIf } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterLink, Router} from '@angular/router';
 
@@ -18,6 +18,7 @@ import { ConfirmPasswordValidator } from 'src/shared/Forms/validators/confirm-pa
   standalone: true,
   imports: [
     NgStyle,
+    NgIf,
     RouterLink,
     ReactiveFormsModule,
     CardSessionComponent,

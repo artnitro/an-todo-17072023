@@ -29,10 +29,11 @@ import { ConfirmPasswordValidator } from 'src/shared/Forms/validators/confirm-pa
 export class ForgetpwdComponent extends FormFieldsAbstract implements OnInit {
 
   forgetEmailForm!: FormGroup;
-  // forgetPasswordForm!: FormGroup; //// Poner para el nuevo formulario del password.
+  forgetPasswordForm!: FormGroup;
 
   title: string = '¿Olvidaste la contraseña?';
   hasEmailError: {[key: string]: any} = {};
+  hasPasswordError: {[key: string]: any} = {};
   colors: {[key: string]: any} = COLORS;
   showEmail: boolean = true;
   showPanel: boolean = false;
@@ -46,10 +47,16 @@ export class ForgetpwdComponent extends FormFieldsAbstract implements OnInit {
   }
   ngOnInit(): void {
 
-    console.info('an-INNFO: Ejecutando ForgetpwdComponent.');
+    console.info('an-INFO: Ejecutando ForgetpwdComponent.');
 
     this.forgetEmailForm = this.fb.group({
       email: this.email(),
+    });
+    this.forgetPasswordForm = this.fb.group({
+      password: this.password(),
+      confirmPassword: this.password(),
+    }, {
+      validator: ConfirmPasswordValidator.confirmPassword
     });
 
   }

@@ -3,7 +3,7 @@
  -->
 
 <an-todo-card-session [title]="title">
-  <div class="mt-2 py-5 w-80 bg-white/50">
+  <div class="mt-2 py-5 w-80 bg-white/50" *ngIf="!showPassword">
     <form [formGroup]="forgetEmailForm" novalidate>
       <div class="font-roboto text-sm pl-4" *ngIf="showEmail">
         <input 
@@ -21,11 +21,47 @@
           <div class="text-xs text-red-600">Error en Email</div>
         </div>
       </div>
-      <div class="font-roboto text-sm pl-4" *ngIf="showEmail">
-        <a routerLink="/signin" class="block mt-4">Iniciar sesión</a>
-      </div>
       <div class="font-roboto text-sm pl-4" *ngIf="showPanel">
         <p>Recibirás un mensaje a esa dirección de correo para poder modificar tu contraseña.</p>
+      </div>
+      <div class="font-roboto text-sm pl-4">
+        <a routerLink="/signin" class="block mt-4">Iniciar sesión</a>
+      </div>
+    </form>
+  </div>
+  <div class="mt-2 py-5 w-80 bg-white/50" *ngIf="showPassword">
+    <form [formGroup]="forgetPasswordForm" novalidate>
+      <div class="font-roboto text-sm pl-4">
+        <input 
+          id="password" 
+          type="password" 
+          formControlName="password" 
+          autocomplete="off" 
+          placeholder="Password"
+          spellcheck="false"
+          class="block peer an-input"
+          [ngStyle]="{'border-color': hasPasswordError['password'] ? colors['red'] : null}"/>
+        <label for="password" class="relative an-label" [ngStyle]="{'color': hasPasswordError['password'] ? colors['red'] : null}">Password</label>
+        <div class="flex relative gap-2 items-center -top-5 invisible" [ngStyle]="{'visibility': hasPasswordError['password'] ? 'visible' : null}">
+          <div class="an-circulo text-xs ml-36 w-4 h-4 text-white bg-red-600">!</div>
+          <div class="text-xs text-red-600">Error en Password</div>
+        </div>
+      </div>
+      <div class="font-roboto text-sm pl-4">
+        <input 
+          id="confirmPassword" 
+          type="password" 
+          formControlName="confirmPassword" 
+          autocomplete="off" 
+          placeholder="Confirma Password"
+          spellcheck="false"
+          class="block peer an-input"
+          [ngStyle]="{'border-color': hasPasswordError['confirmPassword'] ? colors['red'] : null}"/>
+        <label for="confirmPassword" class="relative an-label" [ngStyle]="{'color': hasPasswordError['confirmPassword'] ? colors['red'] : null}">Confirma Password</label>
+        <div class="flex relative gap-2 items-center -top-5 invisible" [ngStyle]="{'visibility': hasPasswordError['confirmPassword'] ? 'visible' : null}">
+          <div class="an-circulo text-xs ml-32 w-4 h-4 text-white bg-red-600">!</div>
+          <div class="text-xs text-red-600">Error Confirma Password</div>
+        </div>
       </div>
     </form>
   </div>

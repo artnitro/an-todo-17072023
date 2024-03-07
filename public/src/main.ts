@@ -1,6 +1,6 @@
 import { enableProdMode, importProvidersFrom } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
 import { APOLLO_OPTIONS, APOLLO_NAMED_OPTIONS, ApolloModule } from 'apollo-angular';
@@ -13,22 +13,18 @@ import { OauthNamedGraphql } from './shared/graphql/oauth-named.graphql';
 import { ApiGraphql } from './shared/graphql/api.graphql';
 
 
-/**
- * Comprobamos si se está ejecutando en modo PRODUCCIÓN.
- */
+//Comprobamos si se está ejecutando en modo PRODUCCIÓN.
 
 ( environment.production ) ? enableProdMode() : console.info('an-INFO: Angular se ejecuta en modo desarrollo.');
 
-/**
- * Arrancamos la aplicación mediante Standalone Componnents.
- */
+// Arrancamos la aplicación mediante Standalone Componnents.
 
 ( async (): Promise<void> => {
   try {
     await bootstrapApplication(AppComponent, {
       providers: [
         importProvidersFrom(HttpClientModule, ApolloModule),
-        provideRouter(AppRoutes),
+        provideRouter(AppRoutes, withComponentInputBinding()),
         {
           provide: APOLLO_OPTIONS,
           useFactory: ApiGraphql,

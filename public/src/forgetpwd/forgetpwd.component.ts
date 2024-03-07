@@ -2,7 +2,7 @@
  * Componente Forget Passwword.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, effect } from '@angular/core';
 import { NgStyle, NgIf } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterLink, Router} from '@angular/router';
@@ -11,6 +11,7 @@ import { FormFieldsAbstract } from 'src/shared/Forms/form-fields.abstract';
 import { CardSessionComponent } from 'src/components/card-session/card-session.component';
 import { COLORS } from 'src/shared/config';
 import { ConfirmPasswordValidator } from 'src/shared/Forms/validators/confirm-password.validator';
+import { userForgetpwd } from 'src/shared/signals/user.signal';
 
 
 @Component({
@@ -43,7 +44,13 @@ export class ForgetpwdComponent extends FormFieldsAbstract implements OnInit {
   constructor(
     private fb: FormBuilder,
   ) {
+    
     super();
+
+    effect( () => {
+      console.log('an-LOG: El valor actual de Signal: ', userForgetpwd());
+    });
+
   }
   ngOnInit(): void {
 

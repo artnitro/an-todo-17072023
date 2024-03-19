@@ -2,7 +2,15 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input ChangepwdInput {
+  email: String!
+  password: String!
+}
+
 type Mutation {
+  """Consulta para cambiar el password"""
+  changePassword(changepwdInput: ChangepwdInput!): Boolean!
+
   """Consulta para crear un usuario"""
   createUser(userInput: UserInput!): Token!
 }
@@ -14,8 +22,16 @@ type Query {
   """Consulta para ver si es usuario o no de la aplicación"""
   isUser(email: String!, password: String!): Token!
 
+  """
+  Comprueba si el usuario permanece aún en la cache del sistema para el cambio de contraseña
+  """
+  isUserForguetpwd(uuid: String!): String
+
   """Refresca sesión de usuario caducada"""
   refreshUser: Token!
+
+  """Identidicación del usuario que olvida o quiere cambiar el password"""
+  uuidForgetpwd(email: String!): String!
 }
 
 type Token {

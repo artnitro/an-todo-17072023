@@ -25,7 +25,7 @@ type Query {
   """
   Comprueba si el usuario permanece aún en la cache del sistema para el cambio de contraseña
   """
-  isUserForguetpwd(uuid: String!): String
+  isUserForgetpwd(uuid: String!): String
 
   """Refresca sesión de usuario caducada"""
   refreshUser: Token!

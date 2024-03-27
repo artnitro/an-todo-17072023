@@ -3,9 +3,9 @@
  -->
 
 <an-todo-card-session [title]="title">
-  <div class="mt-2 py-5 w-80 bg-white/50" *ngIf="!showPassword">
+  <div class="mt-2 py-5 w-80 bg-white/50" [ngStyle]="{'display': showEmail ? 'block' : 'none'}">
     <form [formGroup]="forgetEmailForm" novalidate>
-      <div class="font-roboto text-sm pl-4" *ngIf="showEmail">
+      <div class="font-roboto text-sm pl-4">
         <input 
           id="email" 
           type="text"
@@ -21,15 +21,23 @@
           <div class="text-xs text-red-600">Error en Email</div>
         </div>
       </div>
-      <div class="font-roboto text-sm pl-4" *ngIf="showPanel">
-        <p>Recibirás un mensaje a esa dirección de correo para poder modificar tu contraseña.</p>
-      </div>
       <div class="font-roboto text-sm pl-4">
         <a routerLink="/signin" class="block mt-4">Iniciar sesión</a>
       </div>
     </form>
   </div>
-  <div class="mt-2 py-5 w-80 bg-white/50" *ngIf="showPassword">
+  <div class="mt-2 py-5 w-80 bg-white/50" [ngStyle]="{'display': showPanel ? 'block' : 'none'}">
+    <div class="font-roboto text-sm pl-4">
+      <p>Recibirás un mensaje a esa dirección de correo para poder modificar tu contraseña.</p>
+    </div>
+    <div class="font-roboto text-sm pl-4">
+      <a routerLink="/signin" class="block mt-4">Iniciar sesión</a>
+    </div>
+  </div>
+  <div class="mt-3 w-[76px] bg-white/50 transition-colors hover:bg-white" [ngStyle]="{'display': showEmail ? 'block' : 'none'}">
+    <button class="pl-4 py-1" type="button" (click)="checkMail()">Enviar</button>
+  </div>
+  <div class="mt-2 py-5 w-80 bg-white/50" [ngStyle]="{'display': showPassword ? 'block' : 'none'}">
     <form [formGroup]="forgetPasswordForm" novalidate>
       <div class="font-roboto text-sm pl-4">
         <input 
@@ -63,9 +71,20 @@
           <div class="text-xs text-red-600">Error Confirma Password</div>
         </div>
       </div>
+      <div class="font-roboto text-sm pl-4">
+        <a routerLink="/signin" class="block mt-4">Iniciar sesión</a>
+      </div>
     </form>
   </div>
-  <div class="mt-3 w-[76px] bg-white/50 transition-colors hover:bg-white" *ngIf="showSend">
-    <button class="pl-4 py-1" type="button" (click)="checkForm()">Enviar</button>
+  <div class="mt-2 py-5 w-80 bg-white/50" [ngStyle]="{'display': showPanelPwd ? 'block' : 'none'}">
+    <div class="font-roboto text-sm pl-4">
+      <p>El identificador de usuario ha expirado o el identificador de usuario es incorrecto</p>
+    </div>
+    <div class="font-roboto text-sm pl-4">
+      <a routerLink="/signin" class="block mt-4">Iniciar sesión</a>
+    </div>
+  </div>
+  <div class="mt-3 w-[76px] bg-white/50 transition-colors hover:bg-white" [ngStyle]="{'display': showPassword ? 'block' : 'none'}">
+    <button class="pl-4 py-1" type="button" (click)="checkPassword()">Enviar</button>
   </div>
 </an-todo-card-session>

@@ -87,7 +87,7 @@ export class UserResolver {
   }
 
   @Query(() => String, { description: 'Comprueba si el usuario permanece aún en la cache del sistema para el cambio de contraseña', nullable: true})
-  async isUserForguetpwd(@Args() isuserForgetpwd: IsuserForgetpwd): Promise<string>  {
+  async isUserForgetpwd(@Args() isuserForgetpwd: IsuserForgetpwd): Promise<string>  {
 
     return await this.userService.getForgetpwd(isuserForgetpwd.uuid);
     

@@ -9,8 +9,8 @@ import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';
 
 import { UserData } from './forgetpwd.interface';
-import { GET_UUID_FORGETPWD } from './forgetpwd.query';
-import { user } from 'src/shared/signals/user.signal';
+import { GET_UUID_FORGETPWD, GET_IS_USER_FORGETPWD } from './forgetpwd.query';
+// import { user } from 'src/shared/signals/user.signal';
 
 
 @Injectable({
@@ -30,6 +30,20 @@ export class ForgetpwdService {
         query: GET_UUID_FORGETPWD,
         variables: {
           email: data['email']
+        }
+      })
+      .valueChanges;
+
+  }
+
+  isUserForgetpwd$( data: UserData): Observable<any> {
+
+    return this.apollo
+      .use('oauth')
+      .watchQuery({
+        query: GET_IS_USER_FORGETPWD,
+        variables: {
+          uuid: data['uuid']
         }
       })
       .valueChanges;

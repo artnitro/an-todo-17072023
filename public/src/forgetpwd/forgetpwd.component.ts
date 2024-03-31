@@ -44,10 +44,11 @@ export class ForgetpwdComponent extends FormFieldsAbstract implements OnInit {
   hasEmailError: {[key: string]: any} = {};
   hasPasswordError: {[key: string]: any} = {};
   colors: {[key: string]: any} = COLORS;
+  userEmail: string = '';
   showEmail: boolean = true;
   showPanel: boolean = false;
   showPassword: boolean = false;
-  showSend: boolean = true;
+  showPanelPwd: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -59,6 +60,30 @@ export class ForgetpwdComponent extends FormFieldsAbstract implements OnInit {
 
     effect( () => {
       console.log('an-LOG: El valor actual de Signal, forget password: ', userForgetpwd());
+
+      if ( userForgetpwd() !== 'ok' ) {
+        this.subscription$.add(
+          this.forgetpwdService.isUserForgetpwd$({
+            uuid: userForgetpwd(),
+          })
+          .pipe(map(result => result.data.isUserForgetpwd))
+          .subscribe({
+            next: (isUserForgetpwd) => {
+              if ( isUserForgetpwd !== null ) {
+                this.userEmail = isUserForgetpwd;
+                this.showEmail = false;
+                this.showPassword = true;
+              } else {
+                this.showEmail = false;
+                this.showPanelPwd = true;
+              }
+            }
+          })
+        );
+      } else {
+        this.showEmail = true;
+      }
+      
     });
 
   }
@@ -78,7 +103,7 @@ export class ForgetpwdComponent extends FormFieldsAbstract implements OnInit {
 
   }
 
-  checkForm(): void {
+  checkMail(): void {
 
     this.hasEmailError = this.formService.hasFieldError(this.forgetEmailForm);
 
@@ -91,7 +116,11 @@ export class ForgetpwdComponent extends FormFieldsAbstract implements OnInit {
         .pipe(map(result => result.data.uuidForgetpwd))
         .subscribe({
           next: (uuidForgetpwd) => {
-            console.log('an-LOG: Resultado de la consulta: ', uuidForgetpwd);
+            console.log('an-LOG: uuid de usuario: ', uuidForgetpwd);
+            this.showEmail = false;
+            this.showPanel = true;
+            this.showPassword = false;
+            this.showPanelPwd = false;
           },
           error: (err) => {
             Object
@@ -110,6 +139,15 @@ export class ForgetpwdComponent extends FormFieldsAbstract implements OnInit {
       )
 
     }
+
+  }
+
+  checkPassword(): void {
+
+    this.hasPasswordError = this.formService.hasFieldError(this.forgetPasswordForm);
+
+    console.log('an-LOG: Formulario passoword: ', this.hasPasswordError);
+    console.log('an-LOG: Comprobando si es usuario: ', this.userEmail);
 
   }
 

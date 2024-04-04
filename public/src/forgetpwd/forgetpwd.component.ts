@@ -3,7 +3,7 @@
  */
 
 import { Component, OnInit, effect } from '@angular/core';
-import { NgStyle, NgIf } from '@angular/common';
+import { NgStyle } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterLink, Router} from '@angular/router';
 
@@ -25,7 +25,6 @@ import { ForgetpwdService } from './forgetpwd.service';
   standalone: true,
   imports: [
     NgStyle,
-    NgIf,
     RouterLink,
     ReactiveFormsModule,
     CardSessionComponent,
@@ -54,12 +53,12 @@ export class ForgetpwdComponent extends FormFieldsAbstract implements OnInit {
     private fb: FormBuilder,
     private formService: FormService,
     private forgetpwdService: ForgetpwdService,
+    private router: Router,
   ) {
     
     super();
 
     effect( () => {
-      console.log('an-LOG: El valor actual de Signal, forget password: ', userForgetpwd());
 
       if ( userForgetpwd() !== 'ok' ) {
         this.subscription$.add(
@@ -116,7 +115,9 @@ export class ForgetpwdComponent extends FormFieldsAbstract implements OnInit {
         .pipe(map(result => result.data.uuidForgetpwd))
         .subscribe({
           next: (uuidForgetpwd) => {
-            console.log('an-LOG: uuid de usuario: ', uuidForgetpwd);
+
+            // console.log('an-LOG: uuid de usuario: ', uuidForgetpwd);
+
             this.showEmail = false;
             this.showPanel = true;
             this.showPassword = false;
@@ -146,8 +147,38 @@ export class ForgetpwdComponent extends FormFieldsAbstract implements OnInit {
 
     this.hasPasswordError = this.formService.hasFieldError(this.forgetPasswordForm);
 
-    console.log('an-LOG: Formulario passoword: ', this.hasPasswordError);
-    console.log('an-LOG: Comprobando si es usuario: ', this.userEmail);
+    if ( Object.keys(this.hasPasswordError).length === 0 ){
+
+      this.subscription$.add(
+        this.forgetpwdService.changePassword$({
+          email: this.userEmail,
+          password: this.forgetPasswordForm.value.password,
+        })
+        .pipe(map(result => result.data.changePassword))
+        .subscribe({
+          next: (changePassword) => {
+            
+            // console.log('an-LOG: Estado del cambio de password: ', changePassword);
+            
+            this.router.navigate(['/signin']);
+          },
+          error: (err) => {
+            Object
+              .keys(err.graphQLErrors)
+              .filter( element => {
+                const { originalError } = err.graphQLErrors[element];
+                if ( originalError.statusCode === 400 || originalError.statusCode === 401 ) {
+                  Object
+                    .keys(this.forgetPasswordForm.controls)
+                    .filter(value => this.forgetPasswordForm.controls[value].setValue(''));
+                  this.hasPasswordError = this.formService.hasFormError(this.forgetPasswordForm);
+                }
+              });
+          }
+        })
+      )
+
+    }
 
   }
 

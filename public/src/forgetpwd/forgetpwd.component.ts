@@ -48,6 +48,7 @@ export class ForgetpwdComponent extends FormFieldsAbstract implements OnInit {
   showPanel: boolean = false;
   showPassword: boolean = false;
   showPanelPwd: boolean = false;
+  showSend: Boolean = true;
 
   constructor(
     private fb: FormBuilder,
@@ -72,9 +73,11 @@ export class ForgetpwdComponent extends FormFieldsAbstract implements OnInit {
                 this.userEmail = isUserForgetpwd;
                 this.showEmail = false;
                 this.showPassword = true;
+                this.showSend = true;
               } else {
                 this.showEmail = false;
                 this.showPanelPwd = true;
+                this.showSend = false;
               }
             }
           })
@@ -102,81 +105,84 @@ export class ForgetpwdComponent extends FormFieldsAbstract implements OnInit {
 
   }
 
-  checkMail(): void {
+  checkForm(value: Boolean): void {
 
-    this.hasEmailError = this.formService.hasFieldError(this.forgetEmailForm);
+    if ( value ) {
 
-    if ( Object.keys(this.hasEmailError).length === 0 ) {
+      this.hasEmailError = this.formService.hasFieldError(this.forgetEmailForm);
 
-      this.subscription$.add(
-        this.forgetpwdService.uuidForgetpwd$({
-          email: this.forgetEmailForm.value.email,
-        })
-        .pipe(map(result => result.data.uuidForgetpwd))
-        .subscribe({
-          next: (uuidForgetpwd) => {
+      if ( Object.keys(this.hasEmailError).length === 0 ) {
 
-            // console.log('an-LOG: uuid de usuario: ', uuidForgetpwd);
+        this.subscription$.add(
+          this.forgetpwdService.uuidForgetpwd$({
+            email: this.forgetEmailForm.value.email,
+          })
+          .pipe(map(result => result.data.uuidForgetpwd))
+          .subscribe({
+            next: (uuidForgetpwd) => {
 
-            this.showEmail = false;
-            this.showPanel = true;
-            this.showPassword = false;
-            this.showPanelPwd = false;
-          },
-          error: (err) => {
-            Object
-              .keys(err.graphQLErrors)
-              .filter( element => {
-                const { originalError } = err.graphQLErrors[element];
-                if ( originalError.statusCode === 400 || originalError.statusCode === 401 ) {
-                  Object
-                    .keys(this.forgetEmailForm.controls)
-                    .filter(value => this.forgetEmailForm.controls[value].setValue(''));
-                  this.hasEmailError = this.formService.hasFormError(this.forgetEmailForm);
-                }
-              });
-          }
-        })
-      )
+              //console.log('an-LOG: uuid de usuario: ', uuidForgetpwd);
 
-    }
+              this.showEmail = false;
+              this.showPanel = true;
+              this.showPassword = false;
+              this.showPanelPwd = false;
+              this.showSend = false;
+            },
+            error: (err) => {
+              Object
+                .keys(err.graphQLErrors)
+                .filter( element => {
+                  const { originalError } = err.graphQLErrors[element];
+                  if ( originalError.statusCode === 400 || originalError.statusCode === 401 ) {
+                    Object
+                      .keys(this.forgetEmailForm.controls)
+                      .filter(value => this.forgetEmailForm.controls[value].setValue(''));
+                    this.hasEmailError = this.formService.hasFormError(this.forgetEmailForm);
+                  }
+                });
+            } 
+          })
+        )
 
-  }
+      }
 
-  checkPassword(): void {
+    } else {
 
-    this.hasPasswordError = this.formService.hasFieldError(this.forgetPasswordForm);
+      this.hasPasswordError = this.formService.hasFieldError(this.forgetPasswordForm);
 
-    if ( Object.keys(this.hasPasswordError).length === 0 ){
-
-      this.subscription$.add(
-        this.forgetpwdService.changePassword$({
-          email: this.userEmail,
-          password: this.forgetPasswordForm.value.password,
-        })
-        .pipe(map(result => result.data.changePassword))
-        .subscribe({
-          next: (changePassword) => {
-            
-            // console.log('an-LOG: Estado del cambio de password: ', changePassword);
-            
-            this.router.navigate(['/signin']);
-          },
-          error: (err) => {
-            Object
-              .keys(err.graphQLErrors)
-              .filter( element => {
-                const { originalError } = err.graphQLErrors[element];
-                if ( originalError.statusCode === 400 || originalError.statusCode === 401 ) {
-                  Object
-                    .keys(this.forgetPasswordForm.controls)
-                    .filter(value => this.forgetPasswordForm.controls[value].setValue(''));
-                  this.hasPasswordError = this.formService.hasFormError(this.forgetPasswordForm);
-                }
-              });
-          }
-        })
-      )
+      if ( Object.keys(this.hasPasswordError).length === 0 ){
+  
+        this.subscription$.add(
+          this.forgetpwdService.changePassword$({
+            email: this.userEmail,
+            password: this.forgetPasswordForm.value.password,
+          })
+          .pipe(map(result => result.data.changePassword))
+          .subscribe({
+            next: (changePassword) => {
+              
+              //(console.log('an-LOG: Estado del cambio de password: ', changePassword);
+              
+              this.router.navigate(['/signin']);
+            },
+            error: (err) => {
+              Object
+                .keys(err.graphQLErrors)
+                .filter( element => {
+                  const { originalError } = err.graphQLErrors[element];
+                  if ( originalError.statusCode === 400 || originalError.statusCode === 401 ) {
+                    Object
+                      .keys(this.forgetPasswordForm.controls)
+                      .filter(value => this.forgetPasswordForm.controls[value].setValue(''));
+                    this.hasPasswordError = this.formService.hasFormError(this.forgetPasswordForm);
+                  }
+                });
+            }
+          })
+        )
+  
+      }
 
     }
 

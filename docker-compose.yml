@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   an-mysql:
     build:
@@ -96,18 +95,6 @@ services:
       options:
         max-size: '100k'
         max-file: '5'
-  #an-cdn:
-  #  build: ./cdn
-  #  container_name: 'an-cdn'
-  #  volumes: 
-  #    - ./cdn:/cdn
-  #    - /cdn/node_modules
-  #  restart: always
-  #  logging:
-  #    driver: 'json-file'
-  #    options:
-  #      max-size: '100k'
-  #      max-file: '5'
   an-public:
     build: 
       context: './public'
@@ -124,6 +111,18 @@ services:
      # - distribucion:/angular/dist/angular
       - /angular/node_modules
   #  restart: always
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '100k'
+        max-file: '5'
+  an-mailer:
+    build:
+      context: './mailer'
+    container_name: 'an-mailer'
+    ports:
+      - 8025:8025
+      - 1025:1025
     logging:
       driver: 'json-file'
       options:

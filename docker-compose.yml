@@ -120,6 +120,13 @@ services:
     build:
       context: './mailer'
     container_name: 'an-mailer'
+    env_file:
+      - '.env'
+    environment:
+      - MP_MAX_MESSAGES=5000
+      - MP_SMTP_MAX_RECIPIENTS=500
+      - MP_SMTP_AUTH=${USER}:${PASSWORD}
+      - MP_SMTP_AUTH_ALLOW_INSECURE=true
     ports:
       - 8025:8025
       - 1025:1025

@@ -1,1 +1,1 @@
-FROM mailhog/mailhog
+FROM axllent/mailpit

@@ -9,8 +9,8 @@ import { JwtModule } from '@nestjs/jwt';
 
 import { UserService } from './user.service';
 import { UserResolver } from './user.resolver';
-
 import { User } from './user.entity';
+import { MailService } from 'src/mailer/mail.service';
 
 
 @Module({
@@ -24,6 +24,6 @@ import { User } from './user.entity';
       }),
     })
   ],
-  providers: [UserService, UserResolver],
+  providers: [UserService, UserResolver, MailService],
 })
 export class UserModule {}

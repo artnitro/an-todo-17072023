@@ -9,6 +9,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { MysqlModule } from './database/mysql.module';
 import { GraphModule } from './database/graph.module';
 import { RedisConfig } from './database/redis.config';
+import { MailModule } from './mailer/mail.module';
  
 
 @Module({
@@ -19,6 +20,7 @@ import { RedisConfig } from './database/redis.config';
     CacheModule.registerAsync(RedisConfig),
     MysqlModule,
     GraphModule,
+    MailModule,
   ],
 })
 export class AppModule {}

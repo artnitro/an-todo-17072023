@@ -2,9 +2,7 @@
  *  Resolver para User
  */
 
-//TODO: Configurar el envío del correo para el cambio o actualización del password.
-
-import { UnauthorizedException, NotAcceptableException, HttpException , Inject} from '@nestjs/common';
+import { UnauthorizedException, NotAcceptableException, BadRequestException, HttpException , Inject} from '@nestjs/common';
 import { Resolver, Query, Mutation, Args, CONTEXT } from '@nestjs/graphql';
 import { ConfigService } from '@nestjs/config';
 
@@ -18,6 +16,7 @@ import { IsUser } from './dto/is-user.args';
 import { UserForgetpwd } from './dto/user-forgetpwd.args';
 import { IsuserForgetpwd } from './dto/isuser-fogetpwd.args';
 import { ChangepwdInput } from './dto/changepwd.input';
+import { MailService } from 'src/mailer/mail.service';
 
 
 @Resolver( of => User)
@@ -28,6 +27,7 @@ export class UserResolver {
     private configService: ConfigService,
     @Inject(CONTEXT)
     private context,
+    private mailService: MailService,
   ){}
 
   @Query( () => String, { description: 'Consulta de prueba para la aplicación.'})
@@ -72,14 +72,21 @@ export class UserResolver {
   @Query( returns => String, { description: 'Identidicación del usuario que olvida o quiere cambiar el password'})
   async uuidForgetpwd(@Args() userForgetpwd: UserForgetpwd): Promise<string> {
 
-    let  
+    let
+      uuid,
       email,
       mail = ({ email } = userForgetpwd, { email });
     
     const user = await this.userService.findOne(mail);
 
-    if ( user !== null ) { 
-      return await this.userService.setForgetpwd(user.email);
+    if ( user !== null ) {
+      try {
+        uuid = await this.userService.setForgetpwd(user.email);
+        await this.mailService.senderPassword({email: user.email, uuid: uuid}); 
+        return uuid;
+      } catch (err) {
+        throw new BadRequestException('Algo ha fallado', { cause: new Error(), description: 'Fallo en el envío del correo electrónico para la solicitud de cambio de contraseña'});
+      }
     } else {
       throw new UnauthorizedException('Usuario no autorizado', { cause: new Error(), description: 'Usuario no autorizado o error en credenciales'});
     }

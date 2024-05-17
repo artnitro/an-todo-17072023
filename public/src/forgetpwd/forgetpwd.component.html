@@ -26,14 +26,6 @@
       </div>
     </form>
   </div>
-  <div class="mt-2 py-5 w-80 bg-white/50" [ngStyle]="{'display': showPanel ? 'block' : 'none'}">
-    <div class="font-roboto text-sm pl-4">
-      <p>Recibirás un mensaje a esa dirección de correo para poder modificar tu contraseña.</p>
-    </div>
-    <div class="font-roboto text-sm pl-4">
-      <a routerLink="/signin" class="block mt-4">Iniciar sesión</a>
-    </div>
-  </div>
   <div class="mt-2 py-5 w-80 bg-white/50" [ngStyle]="{'display': showPassword ? 'block' : 'none'}">
     <form [formGroup]="forgetPasswordForm" novalidate>
       <div class="font-roboto text-sm pl-4">
@@ -73,14 +65,9 @@
       </div>
     </form>
   </div>
-  <div class="mt-2 py-5 w-80 bg-white/50" [ngStyle]="{'display': showPanelPwd ? 'block' : 'none'}">
-    <div class="font-roboto text-sm pl-4">
-      <p>El identificador de usuario ha expirado o el identificador de usuario es incorrecto</p>
-    </div>
-    <div class="font-roboto text-sm pl-4">
-      <a routerLink="/signin" class="block mt-4">Iniciar sesión</a>
-    </div>
-  </div>
+  <an-todo-card-password [text]="textInfo" [ngStyle]="{'display': panelInfo ? 'block' : 'none'}">
+    <a routerLink="/signin" class="block mt-4">Iniciar sesión</a>
+  </an-todo-card-password>
   <div class="mt-3 w-[76px] bg-white/50 transition-colors hover:bg-white" [ngStyle]="{'display': showSend ? 'block' : 'none'}">
     <button class="pl-4 py-1" type="button" (click)="showEmail ? checkForm(true) : checkForm(false)">Enviar</button>
   </div>

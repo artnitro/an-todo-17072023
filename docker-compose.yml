@@ -65,18 +65,18 @@ services:
       options:
         max-size: '100k'
         max-file: '5'
-  #an-api:
-  #  build: ./api
-  #  container_name: 'an-api'
-  #  volumes:
-  #    - ./api:/api
-  #    - /api/node_modules
+  an-task:
+    build: ./task
+    container_name: 'an-task'
+    volumes:
+      - ./task:/task
+      - /task/node_modules
   #  restart: always
-  #  logging:
-  #    driver: 'json-file'
-  #    options:
-  #      max-size: '100k'
-  #      max-file: '5'
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '100k'
+        max-file: '5'
   an-oauth:
     build:
       context: './oauth'

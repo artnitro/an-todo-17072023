@@ -29,8 +29,8 @@ public/src/environments/environment.*
 **/certs*
 **/db*
 public/dist
-api/dist
 oauth/dist
+task/dist
 
 # Files
 

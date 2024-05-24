@@ -9,8 +9,8 @@ import { HttpLink } from 'apollo-angular/http';
 import { environment } from './environments/environment.development';
 import { AppComponent } from './app/app.component';
 import { AppRoutes } from './app/app.routes';
-import { OauthNamedGraphql } from './shared/graphql/oauth-named.graphql';
-import { ApiGraphql } from './shared/graphql/api.graphql';
+import { ConfigGraphql } from './shared/graphql/config.graphql';
+//import { ApiGraphql } from './shared/graphql/api.graphql';
 
 
 //Comprobamos si se está ejecutando en modo PRODUCCIÓN.
@@ -25,16 +25,16 @@ import { ApiGraphql } from './shared/graphql/api.graphql';
       providers: [
         importProvidersFrom(HttpClientModule, ApolloModule),
         provideRouter(AppRoutes, withComponentInputBinding()),
-        {
+        /* {
           provide: APOLLO_OPTIONS,
           useFactory: ApiGraphql,
           deps: [HttpLink],
-        },
+        }, */
         {
           provide: APOLLO_NAMED_OPTIONS,
-          useFactory: OauthNamedGraphql, 
+          useFactory: ConfigGraphql, 
           deps: [HttpLink],
-        }, 
+        },
       ]
     });
     console.info('an-INFO: Comienza la aplicacion AN-TODO-17072023.');

@@ -2,10 +2,11 @@ import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { ValidationPipe} from '@nestjs/common';
 
-import * as cookieParser from 'cookie-parser';
+//import * as cookieParser from 'cookie-parser';
 
 import { AppModule } from './app.module';
 
+// NOTE: Deshabilito provisionalmente cookieParser, porque creo que no hace falta por ahora.
 
 async function bootstrap() {
   
@@ -19,7 +20,7 @@ async function bootstrap() {
       'allowedHeaders': 'Accept,Authorization,Cache-Control,Content-Type,DNT,If-Modified-Since,Keep-Alive,Origin,User-Agent,X-Requested-With',
       'credentials': true,
     });
-    app.use(cookieParser(configService.get('COOKIE_PARSER')));
+    //app.use(cookieParser(configService.get('COOKIE_PARSER')));
     app.useGlobalPipes(new ValidationPipe( { transform: true }));
     await app.listen(3000);
     console.info('an-INFO: Arranque correcto de la aplicación.');

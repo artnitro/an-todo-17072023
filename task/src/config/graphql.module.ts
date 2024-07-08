@@ -16,15 +16,11 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 
-import { UserModule } from 'src/user/user.module';
-
-
 @Module({
   imports: [
-    UserModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      path: 'task/v1/',
+      path: '/task/v1',
       context: ({ req, res }) => ({ req, res }),
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'), 
       sortSchema: true,
@@ -38,7 +34,9 @@ import { UserModule } from 'src/user/user.module';
         }
       },
       subscriptions: {
-        'graphql-ws': true,
+        'graphql-ws': {
+          path: '/task/v1/',
+        }
       },
     })
   ],

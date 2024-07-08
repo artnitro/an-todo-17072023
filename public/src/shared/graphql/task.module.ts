@@ -73,8 +73,10 @@ export class TaskModule {
 
     const wss = new GraphQLWsLink(createClient({
       url: environment.taskWss,
-      connectionParams: {
-        Authorization: token ? `Bearer ${token}` : '',
+      connectionParams: () => {
+        return {
+          Authorization: token ? `Bearer ${token}` : '',
+        }
       }
     }));
 

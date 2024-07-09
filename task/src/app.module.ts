@@ -1,11 +1,15 @@
+/**
+ * Módulo general de la aplicación.
+ */
+
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 import { MongodbModule } from './config/mongodb.module';
 import { GraphqlModule } from './config/graphql.module';
+import { PubsubModule } from './pubsub/pubsub.module';
+import { AppResolver } from './app.resolver';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -14,8 +18,8 @@ import { AppService } from './app.service';
     }),
     MongodbModule,
     GraphqlModule,
+    PubsubModule,
   ],
-  // controllers: [AppController],
-  // providers: [AppService],
+  providers: [ AppResolver],
 })
 export class AppModule {}

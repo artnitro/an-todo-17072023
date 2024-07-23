@@ -24,8 +24,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 
+import { UserModule } from 'src/user/user.module';
+
+
 @Module({
   imports: [
+    UserModule, 
     GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
       imports: [JwtModule, ConfigModule],

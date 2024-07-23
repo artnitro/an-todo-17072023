@@ -10,6 +10,7 @@ import { RedisPubSub } from 'graphql-redis-subscriptions';
 
 export const PUB_SUB = 'PUB_SUB'
 
+@Global()
 @Module({
   providers: [
     {

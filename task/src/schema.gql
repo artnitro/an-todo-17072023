@@ -1,0 +1,39 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Message {
+  message: String!
+}
+
+type Mutation {
+  """Mutation: Añadir un usuario"""
+  addUser(userInput: UserInput!): User!
+}
+
+type Query {
+  """Query: Prueba para la aplicación"""
+  getHello: String!
+
+  """Query: Lista todos los usuarios."""
+  users: [User!]!
+}
+
+type Subscription {
+  """Subscription: Mensajes enviados por cada acción que se haga"""
+  newMessage: Message!
+}
+
+type User {
+  email: String!
+  fisrtName: String!
+  id: String!
+  nickName: String
+}
+
+input UserInput {
+  email: String!
+  fisrtName: String!
+  id: String
+  nickName: String
+}

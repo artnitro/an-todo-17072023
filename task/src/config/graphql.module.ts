@@ -4,7 +4,7 @@
 
 // NOTE: Si es necesario para obtener mayor información de los errores producidos en 
 // desarrollo, comentar el método formatError de GraphQLModule y descomentar cuando 
-// no sea necesario. Puende ocasionar errores en en frontend, sdebido a que se espera
+// no sea necesario. Puende ocasionar errores en en frontend, debido a que se espera
 // una respuesta formateada para los errores así.
 // NOTE: La propiedad message, de formatError, siempre tiene que retornarse ya que 
 // causa error sino se retorna.
@@ -24,12 +24,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 
-import { UserModule } from 'src/user/user.module';
-
 
 @Module({
   imports: [
-    UserModule, 
     GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
       imports: [JwtModule, ConfigModule],
@@ -64,7 +61,7 @@ import { UserModule } from 'src/user/user.module';
                 };
               } else {
                 // throw new UnauthorizedException('Usuario no autorizado', { cause: new Error(), description: 'Usuario no autorizado o error en credenciales'});
-                console.log('an-LOG: Usuario no autorizado token no suministrado.');
+                console.error('an-ERROR: Usuario no autorizado, token no suministrado.');
               }
             }
           }

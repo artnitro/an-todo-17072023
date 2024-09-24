@@ -1,40 +1,50 @@
 /**
- * Creación de Entity y ObjectType para User.
+ * Creación de User entity.
  */
 
-import { Field, ObjectType} from '@nestjs/graphql';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { ObjectType, Field, ID } from '@nestjs/graphql';
 
-import { Entity, ObjectIdColumn, PrimaryGeneratedColumn, ObjectId, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { HydratedDocument, ObjectId } from 'mongoose';
 
-import { Project } from 'src/dto/project.model';
 
-//NOTE: Columnas provisionales para Usuario.
+export type UserDocument = HydratedDocument<User>;
 
-@Entity()
 @ObjectType()
+@Schema({
+  'minimize': false, // Como false, permite almacenar objetos vacíos. Por defecto: true.
+  'strict': false, // Como false, permite guardar datos que no aparezca en la definición del Schema. Por defecto: true.
+  'validateBeforeSave': false, // Como false, Mongoose deja de validar datos. Probaré validar con Mongoose y luego con class-validator.
+  'optimisticConcurrency': true, // Como true, asegura que un documento que estás actualizando no cambia mientras se actualiza, cuando se carga mediante un find() o findOne() simultaaneamente a la actualización.
+  'timestamps': true, // Como true, habilita la creación de createdAt y updatedAt en el esquema de forma automática por Mongoose. Por defect: false.
+})
 export class User {
 
-  @ObjectIdColumn()
-  _id: ObjectId;
+  @Field(type => ID)
+  _id?: ObjectId;
 
-  @Column()
   @Field()
-  id: string;
+  @Prop({ requered: true})
+  firstName: string;
 
-  @Column()
   @Field()
-  fisrtName: string;
-
-  @Column() 
-  @Field({ nullable: true })
+  @Prop({ default: null })
   nickName?: string;
 
-  @Column({ unique: true })
   @Field()
+  @Prop({ unique: true})
   email: string;
 
-  @Column( type => Project )
-  @Field( type => [Project], { nullable: true } )
-  project?: Project[];
-  
+  @Field()
+  createdAt?: Date;
+
+  @Field()
+  updatedAt?: Date;
+
+  @Field({ nullable: true })
+  @Prop({ default: null })
+  deletedAt?: Date;
+
 }
+
+export const UserSchema = SchemaFactory.createForClass(User);

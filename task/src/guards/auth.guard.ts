@@ -18,14 +18,16 @@ export class AuthGuard implements CanActivate {
 
     const ctx = GqlExecutionContext.create(context);
     const request = ctx.getContext().req;
-    const token = request.headers.authorization;
+    const bearer = request.headers.authorization;
 
-    if (!token ) {
+    if ( !bearer ) {
       throw new UnauthorizedException('Usuario no autorizado', { cause: new Error(), description: 'Usuario no autorizado o error en credenciales'});
     }
     
     try {
+      const token = request.headers.authorization.replace('Bearer ', '');
       const payload = await this.jwtService.verifyAsync(token);
+      //console.log('an-LOG: Usuario autorizado. Desde AuthGard, valor del payload: ', payload);
       request['user'] = payload;
     } catch {
       throw new UnauthorizedException('Usuario no autorizado', { cause: new Error(), description: 'Usuario no autorizado o error en credenciales'});

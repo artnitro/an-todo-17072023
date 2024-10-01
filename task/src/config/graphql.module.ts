@@ -16,7 +16,7 @@
 
 import { join } from 'path';
 
-import { Module, UnauthorizedException, Request } from '@nestjs/common';
+import { Module, UnauthorizedException } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';

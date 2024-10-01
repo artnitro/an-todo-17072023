@@ -16,7 +16,7 @@
 
 import { join } from 'path';
 
-import { Module, UnauthorizedException } from '@nestjs/common';
+import { Module, UnauthorizedException, Request } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
@@ -55,7 +55,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
                   const payload = jwtService.verify(token, {
                     secret: configService.get('JWT_SECRET'),
                   });
-                  console.log('an-LOG: Usuario autorizado, valor del payload: ', payload);
+                  //console.log('an-LOG: Usuario autorizado, valor del payload: ', payload);
                 } catch {
                   throw new UnauthorizedException('Usuario no autorizado', { cause: new Error(), description: 'Usuario no autorizado o error en credenciales'});
                 };

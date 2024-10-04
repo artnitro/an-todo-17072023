@@ -9,7 +9,7 @@ import { Model } from 'mongoose';
 
 import { User } from './user.entity';
 import { UserInput } from 'src/dto/user.input';
-
+import { Email } from 'src/dto/email.args';
 
 @Injectable()
 export class UserService {
@@ -19,13 +19,14 @@ export class UserService {
   ) {}
 
   /**
-   * @description Encuentra un usuario.
-   * @param data Object.
+   * @description Encuentra un usuario por email.
+   * @param data type Email.
    * @returns Promise<User[]>
    */
-  async getUser(data): Promise<User[]> {
+  async getUser(data: Email): Promise<User[]> {
 
-    return await this.userModel.find(data).exec();
+    const { email } = data; 
+    return await this.userModel.find({ email: email }).exec();
 
   }
 
@@ -40,7 +41,7 @@ export class UserService {
 
   /**
    * @description Añade un usuario.
-   * @param userInput 
+   * @param userInput type UserInput.
    * @returns Promise<User>
    */
   async setUser( userInput: UserInput): Promise<User> {

@@ -11,11 +11,12 @@ import { map } from 'rxjs/operators';
 import { FormFieldsAbstract } from 'src/shared/Forms/form-fields.abstract';
 import { CardSessionComponent } from 'src/components/card-session/card-session.component'; 
 import { FormService } from 'src/services/forms/form.service';
-import { COLORS } from 'src/shared/config';
+import { colors } from 'src/config/config.service';
 import { ConfirmPasswordValidator } from 'src/shared/Forms/validators/confirm-password.validator';
 import { SignupService } from './signup.service';
 import { user } from 'src/shared/signals/user.signal';
 import { Unsubscribe } from 'src/decorators/unsubscribe.decorator';
+
 
 @Component({
   selector: 'an-todo-signup',
@@ -37,7 +38,7 @@ export class SignupComponent extends FormFieldsAbstract implements OnInit {
 
   title: string = 'Regístrate';
   hasError: {[key: string]: any} = {};
-  colors: {[key: string]: any} = COLORS; 
+  colors: {[key: string]: any} = colors; 
 
   constructor(
     private fb:FormBuilder,

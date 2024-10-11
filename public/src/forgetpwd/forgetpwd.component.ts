@@ -12,13 +12,14 @@ import { map } from 'rxjs/operators';
 
 import { FormFieldsAbstract } from 'src/shared/Forms/form-fields.abstract';
 import { CardSessionComponent } from 'src/components/card-session/card-session.component';
-import { COLORS } from 'src/shared/config';
+import { colors } from 'src/config/config.service';
 import { ConfirmPasswordValidator } from 'src/shared/Forms/validators/confirm-password.validator';
 import { userForgetpwd } from 'src/shared/signals/user.signal';
 import { FormService } from 'src/services/forms/form.service';
 import { Unsubscribe } from 'src/decorators/unsubscribe.decorator';
 import { ForgetpwdService } from './forgetpwd.service';
 import { CardPasswordComponent } from 'src/components/card-password/card-password.component';
+
 
 @Component({
   selector: 'an-todo-forgetpwd',
@@ -42,7 +43,7 @@ export class ForgetpwdComponent extends FormFieldsAbstract implements OnInit {
   title: string = '¿Olvidaste la contraseña?';
   hasEmailError: {[key: string]: any} = {};
   hasPasswordError: {[key: string]: any} = {};
-  colors: {[key: string]: any} = COLORS;
+  colors: {[key: string]: any} = colors;
   userEmail: string = '';
   showEmail: boolean = true;
   showPassword: boolean = false;

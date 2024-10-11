@@ -15,7 +15,7 @@ import { map } from 'rxjs/operators';
 import { FormFieldsAbstract } from 'src/shared/Forms/form-fields.abstract';
 import { CardSessionComponent } from 'src/components/card-session/card-session.component'; 
 import { FormService } from 'src/services/forms/form.service';
-import { COLORS } from 'src/shared/config';
+import { colors } from 'src/config/config.service';
 import { GET_IS_USER } from './signin.query';
 import { SigninService } from './signin.service';
 import { user } from 'src/shared/signals/user.signal';
@@ -42,7 +42,7 @@ export class SigninComponent extends FormFieldsAbstract implements OnInit {
 
   title: string = 'Iniciar sesión';
   hasError: {[key: string]: any} = {};
-  colors: {[key: string]: any} = COLORS; 
+  colors: {[key: string]: any} = colors; 
     
   constructor(
     private fb: FormBuilder,

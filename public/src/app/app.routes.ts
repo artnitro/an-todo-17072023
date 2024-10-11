@@ -22,15 +22,5 @@ export const AppRoutes: Routes = [
   { 
     path: 'dashboard', 
     component: DashboardComponent,
-  }, 
-  {
-    path: '',
-    redirectTo: '/signin',
-    pathMatch: 'full',
-  },
-  {
-    path: '**',
-    redirectTo: '/signin',
-    pathMatch: 'full',
   },
 ];

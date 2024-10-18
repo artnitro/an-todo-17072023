@@ -2,51 +2,61 @@
  * Arranque de la aplicación an-todo-16072023.
  */
 
-import { enableProdMode, importProvidersFrom } from '@angular/core';
+import { enableProdMode, importProvidersFrom, APP_INITIALIZER } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 
-import { APOLLO_OPTIONS, APOLLO_NAMED_OPTIONS, ApolloModule } from 'apollo-angular';
-import { HttpLink } from 'apollo-angular/http';
+import { ApolloModule } from 'apollo-angular';
+
+import { from, queueScheduler, Subscription } from 'rxjs';
 
 import { environment } from './environments/environment.development';
 import { AppComponent } from './app/app.component';
 import { AppRoutes } from './app/app.routes';
-//import { ConfigGraphql } from './shared/graphql/config.graphql';
-//import { ApiGraphql } from './shared/graphql/api.graphql';
-
 import { OauthModule } from './shared/graphql/oauth.module';
 import { TaskModule } from './shared/graphql/task.module';
+import { ConfigService } from './config/config.service';
 
-
-//Comprobamos si se está ejecutando en modo PRODUCCIÓN.
 
 ( environment.production ) ? enableProdMode() : console.info('an-INFO: Angular se ejecuta en modo desarrollo.');
 
-// Arrancamos la aplicación mediante Standalone Componnents.
+function initializeAppFactory( config: ConfigService ) {
+
+  return () => {
+    
+    const subscription: Subscription = from([ config.setBackground(), config.userForgetPassword(), config.setUser() ], queueScheduler)
+      .subscribe({
+        next: (result) => {
+          console.log('an-LOG: Configuración: ', result);
+        }, 
+        error: (err) => {
+          console.error('an-ERROR: Error en configuración: ', err); 
+        }
+      });
+    subscription.unsubscribe();
+
+  }
+
+}
 
 ( async (): Promise<void> => {
   try {
     await bootstrapApplication(AppComponent, {
       providers: [
         importProvidersFrom(
-          HttpClientModule, 
           ApolloModule, 
           TaskModule, 
           OauthModule,
         ),
+        provideHttpClient(),
         provideRouter(AppRoutes, withComponentInputBinding()),
-        /* {
-          provide: APOLLO_OPTIONS,
-          useFactory: ApiGraphql,
-          deps: [HttpLink],
-        }, */
-        /* {
-          provide: APOLLO_NAMED_OPTIONS,
-          useFactory: ConfigGraphql, 
-          deps: [HttpLink],
-        }, */
+        {
+          provide: APP_INITIALIZER,
+          useFactory: initializeAppFactory,
+          multi: true,
+          deps:[ConfigService],
+        },
       ]
     });
     console.info('an-INFO: Comienza la aplicacion AN-TODO-17072023.');

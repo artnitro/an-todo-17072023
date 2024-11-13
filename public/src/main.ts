@@ -22,10 +22,17 @@ import { ConfigService } from './config/config.service';
 ( environment.production ) ? enableProdMode() : console.info('an-INFO: Angular se ejecuta en modo desarrollo.');
 
 function initializeAppFactory( config: ConfigService ) {
+  
+  const tasks = [
+    config.setStore(),
+    config.setBackground(), 
+    config.userForgetPassword(), 
+    config.userRoute(),
+  ];
 
   return () => {
     
-    const subscription: Subscription = from([ config.setBackground(), config.userForgetPassword(), config.setUser() ], queueScheduler)
+    const subscription: Subscription = from(tasks, queueScheduler)
       .subscribe({
         next: (result) => {
           console.log('an-LOG: Configuración: ', result);

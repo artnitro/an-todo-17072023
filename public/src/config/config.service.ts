@@ -18,7 +18,6 @@ import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Unsubscribe } from 'src/decorators/unsubscribe.decorator';
-//import { user, userForgetpwd } from 'src/shared/signals/user.signal'; ////////////// Quitar.
 import { USER_STORE } from 'src/signals/signal.service';
 
 
@@ -118,7 +117,6 @@ export class ConfigService {
 
     if ( this.params?.get('user') ) {
       const token: any = this.params?.get('user');
-      //userForgetpwd.set(token);/////////////// Quitar
       this.userStore.updateKey('forgetPassword', token);
       this.router.navigate(['/forgetpwd']);
       return { userForgotPassword: true };
@@ -138,7 +136,6 @@ export class ConfigService {
       .pipe(map(result => result.data.refreshUser))
       .subscribe({
         next: (refreshUser) => {
-          //user.set(refreshUser.access_token); ///////////// Quitar.
           this.userStore.updateKey('id', refreshUser.access_token);
           this.router.navigate(['/dashboard']);
         },

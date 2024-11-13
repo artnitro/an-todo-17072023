@@ -8,7 +8,7 @@
 // imagen de fondo será cargada desde las que tenga seleccionada en su directorio personal.
 // Esa o esas imágenes, las subirá a su directorio personal.
 
-import { Injectable, Inject, Renderer2, RendererFactory2 } from '@angular/core';
+import { Injectable, Inject, inject, Renderer2, RendererFactory2 } from '@angular/core';
 import { Router } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 import { HttpParams } from '@angular/common/http';
@@ -18,7 +18,8 @@ import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Unsubscribe } from 'src/decorators/unsubscribe.decorator';
-import { user, userForgetpwd } from 'src/shared/signals/user.signal';
+//import { user, userForgetpwd } from 'src/shared/signals/user.signal'; ////////////// Quitar.
+import { USER_STORE } from 'src/signals/signal.service';
 
 
 // Interfaces.
@@ -35,6 +36,7 @@ interface IConfig {
   backgroundImage?: boolean,
   userRoute?: boolean,
   userForgotPassword?: boolean,
+  setStore?: boolean,
 }
 
 // Constantes globales.
@@ -66,6 +68,8 @@ const GET_REFRESH_USER = gql`
 @Unsubscribe()
 export class ConfigService {
 
+  private userStore = inject(USER_STORE);
+
   private renderer!: Renderer2;
   private querySubscription$: Subscription = new Subscription();
   private params!: URLSearchParams;
@@ -80,6 +84,16 @@ export class ConfigService {
     this.renderer = rendererFactory.createRenderer(null, null);
     this.params = new URLSearchParams(document.defaultView?.location.search);
 
+  }
+
+  setStore():IConfig {
+
+    this.userStore.set({
+      id: '',
+      forgetPassword: '',
+    });
+
+    return { setStore: true }; 
   }
 
   /**
@@ -104,7 +118,8 @@ export class ConfigService {
 
     if ( this.params?.get('user') ) {
       const token: any = this.params?.get('user');
-      userForgetpwd.set(token);
+      //userForgetpwd.set(token);/////////////// Quitar
+      this.userStore.updateKey('forgetPassword', token);
       this.router.navigate(['/forgetpwd']);
       return { userForgotPassword: true };
     } 
@@ -116,14 +131,15 @@ export class ConfigService {
    * @description Configura ruta de navegación del usuario, si token es válido
    * @returns IConfig
    */
-  setUser(): IConfig {
+  userRoute(): IConfig {
 
     if ( this.params?.size === 0 ) {
       this.querySubscription$ = this.refreshUser$()
       .pipe(map(result => result.data.refreshUser))
       .subscribe({
         next: (refreshUser) => {
-          user.set(refreshUser.access_token);
+          //user.set(refreshUser.access_token); ///////////// Quitar.
+          this.userStore.updateKey('id', refreshUser.access_token);
           this.router.navigate(['/dashboard']);
         },
         error: (err) => {

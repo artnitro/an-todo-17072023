@@ -2,7 +2,7 @@
  * Módulo GraphQL para task.
  */
 
-import { NgModule, effect } from '@angular/core';
+import { NgModule, inject } from '@angular/core';
 
 import { ApolloLink, InMemoryCache, from, split } from '@apollo/client/core';
 import { Apollo } from 'apollo-angular';
@@ -12,12 +12,14 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { onError } from '@apollo/client/link/error';
 import { createClient } from 'graphql-ws';
 
-import { user } from '../signals/user.signal';
 import { environment } from 'src/environments/environment.development';
+import { USER_STORE } from 'src/signals/signal.service';
 
 
 @NgModule()
 export class TaskModule {
+
+  private userStore = inject(USER_STORE);
 
   constructor(
     private httpLink: HttpLink,
@@ -25,13 +27,7 @@ export class TaskModule {
   ) {
 
     let token: string = '';
-
-    effect( () => {
-
-      token = user();
-      console.log('an-LOG: Valor user-signals:', token);
-
-    });
+    let userToken = this.userStore.select('id');
 
     // Configuración del error.
 
@@ -51,14 +47,14 @@ export class TaskModule {
     // Configuración authorization header.
 
     const authLink = new ApolloLink((operation, forward) => {
-
+      token = userToken();
       operation.setContext({
         headers: {
           'Authorization': token ? `Bearer ${token}` : '',
         }
       });
 
-    return forward(operation);
+      return forward(operation);
   
     });
 
@@ -74,6 +70,7 @@ export class TaskModule {
     const wss = new GraphQLWsLink(createClient({
       url: environment.taskWss,
       connectionParams: () => {
+        token = userToken();
         return {
           Authorization: token ? `Bearer ${token}` : '',
         }

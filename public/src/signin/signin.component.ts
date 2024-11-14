@@ -2,7 +2,7 @@
  * Componente Signin.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { NgStyle } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
@@ -18,7 +18,7 @@ import { FormService } from 'src/services/forms/form.service';
 import { colors } from 'src/config/config.service';
 import { GET_IS_USER } from './signin.query';
 import { SigninService } from './signin.service';
-import { user } from 'src/shared/signals/user.signal';
+import { USER_STORE } from 'src/signals/signal.service';
 import { Unsubscribe } from 'src/decorators/unsubscribe.decorator';
 
 
@@ -37,12 +37,14 @@ import { Unsubscribe } from 'src/decorators/unsubscribe.decorator';
 @Unsubscribe()
 export class SigninComponent extends FormFieldsAbstract implements OnInit {
 
+  private userStore = inject(USER_STORE);
+  
   signinForm!: FormGroup;
   subscription$: Subscription = new Subscription();
 
   title: string = 'Iniciar sesión';
   hasError: {[key: string]: any} = {};
-  colors: {[key: string]: any} = colors; 
+  colors: {[key: string]: any} = colors;
     
   constructor(
     private fb: FormBuilder,
@@ -78,7 +80,7 @@ export class SigninComponent extends FormFieldsAbstract implements OnInit {
         .pipe(map(result => result.data.isUser))
         .subscribe({
           next: (isUser) => {
-            user.set(isUser.access_token);
+            this.userStore.updateKey('id', isUser.access_token);
             this.router.navigate(['/dashboard']);
           },
           error: (err) => {

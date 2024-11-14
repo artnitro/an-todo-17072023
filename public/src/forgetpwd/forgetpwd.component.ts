@@ -2,7 +2,7 @@
  * Componente Forget Passwword.
  */
 
-import { Component, OnInit, effect } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { NgStyle } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterLink, Router} from '@angular/router';
@@ -14,7 +14,7 @@ import { FormFieldsAbstract } from 'src/shared/Forms/form-fields.abstract';
 import { CardSessionComponent } from 'src/components/card-session/card-session.component';
 import { colors } from 'src/config/config.service';
 import { ConfirmPasswordValidator } from 'src/shared/Forms/validators/confirm-password.validator';
-import { userForgetpwd } from 'src/shared/signals/user.signal';
+import { USER_STORE } from 'src/signals/signal.service';
 import { FormService } from 'src/services/forms/form.service';
 import { Unsubscribe } from 'src/decorators/unsubscribe.decorator';
 import { ForgetpwdService } from './forgetpwd.service';
@@ -37,6 +37,9 @@ import { CardPasswordComponent } from 'src/components/card-password/card-passwor
 @Unsubscribe()
 export class ForgetpwdComponent extends FormFieldsAbstract implements OnInit {
 
+  userStore = inject(USER_STORE);
+  
+  userData = this.userStore.select('forgetPassword');
   forgetEmailForm!: FormGroup;
   forgetPasswordForm!: FormGroup;
   subscription$: Subscription = new Subscription();
@@ -55,44 +58,38 @@ export class ForgetpwdComponent extends FormFieldsAbstract implements OnInit {
     private fb: FormBuilder,
     private formService: FormService,
     private forgetpwdService: ForgetpwdService,
-  ) {
-    
+  ) { 
     super();
-
-    effect( () => {
-
-      if ( userForgetpwd() !== 'ok' ) {
-        this.subscription$.add(
-          this.forgetpwdService.isUserForgetpwd$({
-            uuid: userForgetpwd(),
-          })
-          .pipe(map(result => result.data.isUserForgetpwd))
-          .subscribe({
-            next: (isUserForgetpwd) => {
-              if ( isUserForgetpwd !== null ) {
-                this.userEmail = isUserForgetpwd;
-                this.showEmail = false;
-                this.showPassword = true;
-                this.showSend = true;
-                userForgetpwd.set('ok');
-              } else {
-                this.showEmail = false;
-                this.panelInfo = true;
-                this.textInfo = 'El identificador de usuario ha expirado o el identificador de usuario es incorrecto.'
-                this.showSend = false;
-                userForgetpwd.set('ok');
-              }
-            }
-          })
-        );
-      }
-      
-    });
-
   }
   ngOnInit(): void {
 
     console.info('an-INFO: Ejecutando ForgetpwdComponent.');
+
+    if ( this.userData() !== '' ) {
+      this.subscription$.add(
+        this.forgetpwdService.isUserForgetpwd$({
+          uuid: this.userData(),
+        })
+        .pipe(map(result => result.data.isUserForgetpwd))
+        .subscribe({
+          next: (isUserForgetpwd) => {
+            if ( isUserForgetpwd !== null ) {
+              this.userEmail = isUserForgetpwd;
+              this.showEmail = false;
+              this.showPassword = true;
+              this.showSend = true;
+              this.userStore.updateKey('forgetPassword', '');
+            } else {
+              this.showEmail = false;
+              this.panelInfo = true;
+              this.textInfo = 'El identificador de usuario ha expirado o el identificador de usuario es incorrecto.'
+              this.showSend = false;
+              this.userStore.updateKey('forgetPassword', '');
+            }
+          }
+        })
+      );
+    }
 
     this.forgetEmailForm = this.fb.group({
       email: this.email(),
@@ -172,7 +169,7 @@ export class ForgetpwdComponent extends FormFieldsAbstract implements OnInit {
               this.showSend = false;
               this.panelInfo = true;
               this.textInfo = 'Su contraseña se ha modificado correctamente. Con esta nueva contraseña podrá acceder a la aplicación.';
-              userForgetpwd.set('ok');   
+              this.userStore.updateKey('forgetPassword', '');
             },
             error: (err) => {
               Object

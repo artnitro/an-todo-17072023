@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { NgStyle } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
@@ -14,8 +14,9 @@ import { FormService } from 'src/services/forms/form.service';
 import { colors } from 'src/config/config.service';
 import { ConfirmPasswordValidator } from 'src/shared/Forms/validators/confirm-password.validator';
 import { SignupService } from './signup.service';
-import { user } from 'src/shared/signals/user.signal';
+import { USER_STORE } from 'src/signals/signal.service';
 import { Unsubscribe } from 'src/decorators/unsubscribe.decorator';
+import { IS_USER } from 'src/signin/signin.query';
 
 
 @Component({
@@ -32,6 +33,8 @@ import { Unsubscribe } from 'src/decorators/unsubscribe.decorator';
 })
 @Unsubscribe()
 export class SignupComponent extends FormFieldsAbstract implements OnInit {
+
+  userStore = inject(USER_STORE); 
 
   signupForm!: FormGroup;
   subscription$: Subscription = new Subscription();
@@ -83,7 +86,7 @@ export class SignupComponent extends FormFieldsAbstract implements OnInit {
         .pipe(map(result => result.data.createUser))
         .subscribe({
           next: (createUser) => {
-            user.set(createUser.access_token);
+            this.userStore.updateKey('id', createUser.access_token)
             this.router.navigate(['/dashboard'])
           },
           error: (err) => {

@@ -7,6 +7,11 @@ input ChangepwdInput {
   password: String!
 }
 
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type Mutation {
   """Consulta para cambiar el password"""
   changePassword(changepwdInput: ChangepwdInput!): Boolean!
@@ -18,6 +23,9 @@ type Mutation {
 type Query {
   """Consulta de prueba para la aplicación."""
   getHello: String!
+
+  """Query: Listar todos los usuarios."""
+  getUsers: [User!]!
 
   """Consulta para ver si es usuario o no de la aplicación"""
   isUser(email: String!, password: String!): Token!
@@ -36,6 +44,18 @@ type Query {
 
 type Token {
   access_token: String!
+}
+
+type User {
+  createdAt: DateTime!
+  email: String!
+  firstName: String!
+  id: String!
+  isActive: Boolean!
+  lastName: String!
+  nickName: String!
+  password: String!
+  updatedAt: DateTime!
 }
 
 input UserInput {

@@ -44,6 +44,16 @@ export class UserService {
   }
   
   /**
+   * @description Lista todos los usuarios en activo.
+   * @returns Promise<User[]>
+   */
+  async getUsers(): Promise<User[]> {
+
+    return await this.userRepository.find();
+
+  }
+
+  /**
    * @description Encuentra un usuario por id o email
    * @param data 
    * @returns Promise<User>

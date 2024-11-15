@@ -35,6 +35,13 @@ export class UserResolver {
     return 'Hola Arturo, desde GraphQL.';
   }
 
+  @Query( () => [User], { description: 'Query: Listar todos los usuarios.'})
+  async getUsers(): Promise<User[]> {
+
+    return await this.userService.getUsers();
+
+  }
+
   @Query( () => Token, { description: 'Consulta para ver si es usuario o no de la aplicación' }) 
   async isUser(@Args() isUser: IsUser): Promise<Token | HttpException> {
 

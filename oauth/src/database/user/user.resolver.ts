@@ -17,6 +17,7 @@ import { UserForgetpwd } from './dto/user-forgetpwd.args';
 import { IsuserForgetpwd } from './dto/isuser-fogetpwd.args';
 import { ChangepwdInput } from './dto/changepwd.input';
 import { MailService } from 'src/mailer/mail.service';
+import { IsActive } from './dto/is-active.args';
 
 
 @Resolver( of => User)
@@ -35,10 +36,10 @@ export class UserResolver {
     return 'Hola Arturo, desde GraphQL.';
   }
 
-  @Query( () => [User], { description: 'Query: Listar todos los usuarios.'})
-  async getUsers(): Promise<User[]> {
+  @Query( () => [User], { description: 'Query: Listar todos los usuarios activos o no activos.'})
+  async getUsers(@Args() isActive: IsActive): Promise<User[]> {
 
-    return await this.userService.getUsers();
+    return await this.userService.getUsers(isActive);
 
   }
 

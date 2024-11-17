@@ -18,6 +18,7 @@ import { UserInput } from './dto/user.input';
 import { Token } from './dto/token.args';
 import { UserData } from './dto/user-data.args';
 import { ChangepwdInput } from './dto/changepwd.input';
+import { IsActive } from './dto/is-active.args';
 
 
 @Injectable()
@@ -44,12 +45,14 @@ export class UserService {
   }
   
   /**
-   * @description Lista todos los usuarios en activo.
+   * @description Lista todos los usuarios activos o no activos.
    * @returns Promise<User[]>
    */
-  async getUsers(): Promise<User[]> {
+  async getUsers(active: IsActive): Promise<User[]> {
 
-    return await this.userRepository.find();
+    return await this.userRepository.find({
+      where: active
+    });
 
   }
 

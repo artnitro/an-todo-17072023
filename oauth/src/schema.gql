@@ -24,8 +24,8 @@ type Query {
   """Consulta de prueba para la aplicación."""
   getHello: String!
 
-  """Query: Listar todos los usuarios."""
-  getUsers: [User!]!
+  """Query: Listar todos los usuarios activos o no activos."""
+  getUsers(isActive: Boolean!): [User!]!
 
   """Consulta para ver si es usuario o no de la aplicación"""
   isUser(email: String!, password: String!): Token!

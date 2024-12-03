@@ -6,15 +6,14 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { User, UserSchema } from './user.entity';
-import { UserService } from './user.service';
 import { UserResolver } from './user.resolver';
 import { Project, ProjectSchema } from 'src/project/project.entity';
-import { ProjectService } from 'src/project/project.service';
 import { ProjectResolver } from 'src/project/project.resolver';
 import { Board, BoardSchema } from 'src/board/board.entity';
-import { BoardService } from 'src/board/board.service';
 import { BoardResolver } from 'src/board/board.resolver';
-
+import { CrudService } from 'src/service/crud.service';
+import { userProvider } from './user.povider';
+import { projecProvider } from 'src/project/project.provider';
 
 @Module({
   imports: [
@@ -34,12 +33,12 @@ import { BoardResolver } from 'src/board/board.resolver';
     ]),
   ],
   providers: [ 
-    UserService, 
     UserResolver,
-    ProjectService,
     ProjectResolver,
-    BoardService,
     BoardResolver,
+    CrudService,
+    userProvider,
+    projecProvider,
   ],
 })
 export class UserModule {}

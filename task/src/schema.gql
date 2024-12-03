@@ -2,21 +2,52 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type Message {
   message: String!
 }
 
 type Mutation {
-  """Mutation: Añadir un usuario"""
-  addUser(userInput: UserInput!): User!
+  """Mutation: Añadir un proyecto."""
+  addProject(projectInput: ProjectInput!): Project!
+
+  """Mutation: Añadir un usuario."""
+  setUser(userInput: UserInput!): User!
+}
+
+type Project {
+  _id: ID!
+  createdAt: DateTime!
+  deletedAt: DateTime!
+  name: String!
+  updatedAt: DateTime!
+  user: User!
+}
+
+input ProjectInput {
+  name: String!
+  user: ID!
 }
 
 type Query {
   """Query: Prueba para la aplicación"""
   getHello: String!
 
-  """Query: Lista todos los usuarios."""
-  users: [User!]!
+  """Query: Lista un usuario."""
+  getUser(email: String!): [User!]!
+
+  """Query: Listar todos los usuarios."""
+  getUsers: [User!]!
+
+  """Query: Lista todos los proyectos"""
+  projects: [Project!]!
+
+  """Query: Listar los proyectos de usuario"""
+  userProjects(user: String!): [Project!]!
 }
 
 type Subscription {
@@ -25,15 +56,17 @@ type Subscription {
 }
 
 type User {
+  _id: ID!
+  createdAt: DateTime!
+  deletedAt: DateTime
   email: String!
-  fisrtName: String!
-  id: String!
-  nickName: String
+  firstName: String!
+  nickName: String!
+  updatedAt: DateTime!
 }
 
 input UserInput {
   email: String!
-  fisrtName: String!
-  id: String
+  firstName: String!
   nickName: String
 }

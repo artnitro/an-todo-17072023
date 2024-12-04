@@ -14,6 +14,7 @@ import { BoardResolver } from 'src/board/board.resolver';
 import { CrudService } from 'src/service/crud.service';
 import { userProvider } from './user.povider';
 import { projecProvider } from 'src/project/project.provider';
+import { boardProvider } from 'src/board/board.provider';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { projecProvider } from 'src/project/project.provider';
     CrudService,
     userProvider,
     projecProvider,
+    boardProvider,
   ],
 })
 export class UserModule {}

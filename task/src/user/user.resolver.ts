@@ -11,9 +11,9 @@ import { PUB_SUB } from 'src/pubsub/pubsub.module';
 import { Message } from 'src/dto/message.model';
 import { User } from './user.entity';
 import { UserInput } from 'src/dto/user.input';
-import { UserService } from './user.service';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { Email } from 'src/dto/email.args';
+import { CrudService } from 'src/service/crud.service';
 
 // NOTE: Para producción poner en donde sea necesario @UseGuards(AuthGuard), ya 
 // que para desarrollo no lo utilizo, tendría que utilizar un JWT de usuario válido
@@ -22,6 +22,11 @@ import { Email } from 'src/dto/email.args';
 // no hace falta Guard, ya que en la propia configuración de GraphQL se gestiona la 
 // autorización.
 
+// NOTE: Puede que tenga problemas con el tipo para userProvider. Si hubiera, cambiarlo 
+// de CrudService<User> a any. No creo que tenga problemas, ya que no tengo relacionada
+// esta colección con otra colección.
+
+
 const MESSAGE_ADDED_EVENT = 'messageAdded';
 
 @Resolver( of => User)
@@ -29,7 +34,7 @@ export class UserResolver {
 
   constructor(
     @Inject(PUB_SUB) private readonly pubSub: RedisPubSub,
-    private userService: UserService,
+    @Inject('USER_PROVIDER') private readonly userProvider: CrudService<User>,
   ) {}
 
   @UseGuards(AuthGuard)
@@ -59,7 +64,7 @@ export class UserResolver {
       }
     });
 
-    return await this.userService.getUser(data);
+    return await this.userProvider.getModel(data);
 
   }
 
@@ -72,7 +77,7 @@ export class UserResolver {
       }
     });
 
-    return await this.userService.getUsers();
+    return await this.userProvider.getModels();
 
   }
 
@@ -87,7 +92,7 @@ export class UserResolver {
       }
     });
 
-    return await this.userService.setUser(userInput);
+    return await this.userProvider.setModel(userInput);
 
   }
 

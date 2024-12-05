@@ -2,15 +2,15 @@
  * DTO para projectos de usuario.
  */
 
-import { ArgsType, Field } from '@nestjs/graphql';
+import { ArgsType, Field, ID } from '@nestjs/graphql';
 
-import { IsString } from 'class-validator';
+import { ObjectId } from 'mongoose';
+
 
 @ArgsType()
 export class UserProjects {
 
-  @Field()
-  @IsString()
-  user: string;
+  @Field( () => ID )
+  user: ObjectId;
 
 }

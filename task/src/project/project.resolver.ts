@@ -10,13 +10,10 @@ import { RedisPubSub } from 'graphql-redis-subscriptions';
 import { PUB_SUB } from 'src/pubsub/pubsub.module';
 import { Message } from 'src/dto/message.model';
 
-import { User } from 'src/user/user.entity';
-
 import { Project } from './project.entity';
 import { ProjectInput } from 'src/dto/project.input';
 import { UserProjects } from 'src/dto/user-projects.args';
-import { ProjectService } from './project.service';
-import { UserResolver } from 'src/user/user.resolver';
+import { CrudService } from 'src/service/crud.service';
 
 
 const MESSAGE_ADDED_EVENT = 'messageAdded';
@@ -26,9 +23,8 @@ export class ProjectResolver {
 
   constructor(
     @Inject(PUB_SUB) private readonly pubSub: RedisPubSub,
-    private projectService: ProjectService,
+    @Inject('PROJECT_PROVIDER') private projectProvider: any,
   ) {}
-
 
   @Query( () => [Project], { description: 'Query: Lista todos los proyectos' })
   async projects(): Promise<Project[]> {
@@ -39,16 +35,14 @@ export class ProjectResolver {
       }
     });
 
-    return await this.projectService.findAllProject();
+    return await this.projectProvider.getModels()
 
   }
 
   @Query( () => [Project], { description: 'Query: Listar los proyectos de usuario' })
   async userProjects(
-    @Args() userPorjects: UserProjects
+    @Args() userProjects: UserProjects
   ): Promise<Project[]> {
-
-    const { user } = userPorjects;
 
     this.pubSub.publish(MESSAGE_ADDED_EVENT, {
       newMessage: {
@@ -56,7 +50,7 @@ export class ProjectResolver {
       }
     });
     
-    return await this.projectService.userProjects(user);
+    return await this.projectProvider.getModelPopulate(userProjects, 'user');
     
   }
 
@@ -71,7 +65,7 @@ export class ProjectResolver {
       }
     });
 
-    return await this.projectService.addProject(projectInput);
+    return await this.projectProvider.setModel(projectInput);
 
   }
 

@@ -2,6 +2,22 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Board {
+  _id: ID!
+  createdAt: DateTime!
+  deletedAt: DateTime!
+  name: String!
+  project: Project!
+  sort: Float!
+  updatedAt: DateTime!
+}
+
+input BoardInput {
+  name: String!
+  project: ID!
+  sort: Float!
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -12,8 +28,14 @@ type Message {
 }
 
 type Mutation {
+  """Mutation: Añadir un tablero"""
+  addBoard(boardInput: BoardInput!): Board!
+
   """Mutation: Añadir un proyecto."""
   addProject(projectInput: ProjectInput!): Project!
+
+  """Mutation: Añadir una tarea"""
+  addTask(taskInput: TaskInput!): Task!
 
   """Mutation: Añadir un usuario."""
   setUser(userInput: UserInput!): User!
@@ -34,6 +56,12 @@ input ProjectInput {
 }
 
 type Query {
+  """Query: Listar las tareas de un tablero"""
+  boardTasks(board: ID!): [Task!]!
+
+  """Query: Listar todos los tableros"""
+  boards: [Board!]!
+
   """Query: Prueba para la aplicación"""
   getHello: String!
 
@@ -43,16 +71,38 @@ type Query {
   """Query: Listar todos los usuarios."""
   getUsers: [User!]!
 
+  """Query: Listar los tableros de un proyecto"""
+  projectBoards(project: ID!): [Board!]!
+
   """Query: Lista todos los proyectos"""
   projects: [Project!]!
 
+  """Query: Listar todas las tareas"""
+  tasks: [Task!]!
+
   """Query: Listar los proyectos de usuario"""
-  userProjects(user: String!): [Project!]!
+  userProjects(user: ID!): [Project!]!
 }
 
 type Subscription {
   """Subscription: Mensajes enviados por cada acción que se haga"""
   newMessage: Message!
+}
+
+type Task {
+  _id: ID!
+  board: Board!
+  createdAt: DateTime!
+  deletedAt: DateTime!
+  sort: Float!
+  task: String!
+  updatedAt: DateTime!
+}
+
+input TaskInput {
+  board: ID!
+  sort: Float!
+  task: String!
 }
 
 type User {

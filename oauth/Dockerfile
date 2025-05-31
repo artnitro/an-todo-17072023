@@ -19,7 +19,7 @@ RUN mkdir /oauth/node_modules
 COPY . /oauth
 
 # Instalo última version de npm.
-RUN npm install -g npm@latest
+RUN npm install -g npm@10.8.2
 
 # Instalo última versión CLI de NestJS.
 RUN npm install -g @nestjs/cli@latest

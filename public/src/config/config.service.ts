@@ -42,6 +42,9 @@ interface IConfig {
 
 export const colors: IColors = {
   red: 'rgb(225 29 72)',
+  menuDashboard: 'rgb(255, 255, 255, 0.5)',
+  menuDashboardHover: 'rgb(255, 255, 255)',
+  menuDashboardClick: 'rgb(255, 255, 255)',
 }
 
 export const backgroundImages: IBackgroundImages = {

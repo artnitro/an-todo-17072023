@@ -68,6 +68,21 @@ export class UserService {
   }
 
   /**
+   * @description Comprueba si el usuario existe y devuelve el usuario con su password.
+   * @param data 
+   * @returns Promise<User | null>
+   */
+  async checkUser(data: UserData): Promise<User | null> {
+
+    return await this.userRepository
+      .createQueryBuilder('user')
+      .addSelect('user.password')
+      .where('user.email = :email', { email: data.email })
+      .getOne();
+
+  }
+
+  /**
    * @description Actualiza el password del usuario
    * @param changepwdInput 
    * @returns Promise<User>

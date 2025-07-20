@@ -51,7 +51,7 @@ export class UserResolver {
       mail = ({ email } = isUser, { email }),
       { password } = isUser;
 
-    const user = await this.userService.findOne(mail);
+    const user = await this.userService.checkUser(mail);
 
     if ( user !== null && bcrypt.compareSync(password, user.password)) {
       await this.userService.userId(user.id);

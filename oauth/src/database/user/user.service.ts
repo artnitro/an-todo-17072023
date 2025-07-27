@@ -77,7 +77,7 @@ export class UserService {
     return await this.userRepository
       .createQueryBuilder('user')
       .addSelect('user.password')
-      .where('user.email = :email', { email: data.email })
+      .where('user.email = :email AND user.isActive = true', { email: data.email })
       .getOne();
 
   }

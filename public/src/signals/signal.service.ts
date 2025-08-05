@@ -12,11 +12,20 @@ export interface User {
   forgetPassword: string,
 }
 
+export interface Task {
+  id: string, 
+}
 
 // Stores.
 
 export const USER_STORE = new InjectionToken('USER_STORE', {
-  factory: () => (inject(SignalService<User>))
+  providedIn: 'root',
+  factory: () => (new SignalService<User>())
+});
+
+export const TASK_STORE = new InjectionToken('TASK_STORE', {
+  providedIn: 'root',
+  factory: () => (new SignalService<Task>())
 });
 
 

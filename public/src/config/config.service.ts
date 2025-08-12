@@ -18,7 +18,7 @@ import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Unsubscribe } from 'src/decorators/unsubscribe.decorator';
-import { USER_STORE } from 'src/signals/signal.service';
+import { USER_STORE, TASK_STORE } from 'src/signals/signal.service';
 
 
 // Interfaces.
@@ -71,6 +71,7 @@ const GET_REFRESH_USER = gql`
 export class ConfigService {
 
   private userStore = inject(USER_STORE);
+  private taskStore = inject(TASK_STORE);
 
   private renderer!: Renderer2;
   private querySubscription$: Subscription = new Subscription();
@@ -88,6 +89,10 @@ export class ConfigService {
 
   }
 
+  /**
+   * @description Configura el Store de la aplicación.
+   * @returns IConfig
+   */
   setStore():IConfig {
 
     this.userStore.set({
@@ -95,7 +100,12 @@ export class ConfigService {
       forgetPassword: '',
     });
 
-    return { setStore: true }; 
+    this.taskStore.set({
+      id: '',
+    });
+
+    return { setStore: true };
+
   }
 
   /**

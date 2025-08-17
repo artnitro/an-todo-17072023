@@ -5,8 +5,8 @@
 import { ResolveFn, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { inject } from '@angular/core';
 
-import { Observable, of, iif } from 'rxjs';
-import { catchError, filter, tap, map, defaultIfEmpty, switchMap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
 
 import { JwtHelperService } from '@auth0/angular-jwt';
 
@@ -20,7 +20,7 @@ import { AppService } from './app.service';
  * @param state 
  * @returns 
  */
-export const profileResolver: ResolveFn<unknown> = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> => {
+export const profileResolver: ResolveFn<unknown> = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<unknown> => {
 
   const jwtHelper: JwtHelperService = new JwtHelperService();
   const userStore = inject(USER_STORE);

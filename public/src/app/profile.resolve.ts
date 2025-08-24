@@ -20,7 +20,7 @@ import { AppService } from './app.service';
  * @param state 
  * @returns 
  */
-export const profileResolver: ResolveFn<unknown> = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<unknown> => {
+export const profileResolver: ResolveFn<string | null> = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<string | null> => {
 
   const jwtHelper: JwtHelperService = new JwtHelperService();
   const userStore = inject(USER_STORE);

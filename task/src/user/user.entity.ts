@@ -27,7 +27,7 @@ export class User {
   @Prop({ requered: true})
   firstName: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Prop({ default: null })
   nickName?: string;
 

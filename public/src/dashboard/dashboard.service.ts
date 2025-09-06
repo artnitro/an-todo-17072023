@@ -10,6 +10,15 @@ import { Observable } from 'rxjs';
 
 import { GREETINGS } from './dashboard.query';
 import { ON_NEW_MESSAGE } from './dashboard.subscription';
+import { SET_USER } from './dashboard.mutation';
+
+
+interface UserData {
+  firstName: string;
+  nickName?: string | null;
+  email: string;
+
+}
 
 
 @Injectable({
@@ -36,6 +45,21 @@ export class DashboardService {
       .subscribe({
         query: ON_NEW_MESSAGE
       })
+  }
+
+  setUser$(data: UserData): Observable<any> {
+
+    return this.apollo
+      .use('task')
+      .mutate({
+        mutation: SET_USER,
+        variables: {
+          firstName: data['firstName'],
+          nickName: data['nickName'] || null,
+          email: data['email'],
+        }
+      });
+
   }
 
 }

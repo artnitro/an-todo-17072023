@@ -4,17 +4,16 @@
 
 import { Component, inject, OnInit } from '@angular/core';
 import { NgStyle } from '@angular/common';
-import { RouterOutlet, Router, RouterLink } from '@angular/router';
+import { RouterOutlet, Router, RouterLink, ActivatedRoute } from '@angular/router';
 
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { Apollo } from 'apollo-angular';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { DashboardService } from './dashboard.service';
 import { Unsubscribe } from 'src/decorators/unsubscribe.decorator';
 
-import { USER_STORE } from 'src/signals/signal.service';
+import { USER_STORE, TASK_STORE } from 'src/signals/signal.service';
 import { colors } from 'src/config/config.service';
 
 
@@ -43,18 +42,20 @@ interface IMenuOpctions {
 @Unsubscribe()
 export class DashboardComponent implements OnInit {
 
-  //private apollo = inject(Apollo);
   private router: Router = inject(Router);
+  private route: ActivatedRoute = inject(ActivatedRoute);
   private dashboardService = inject(DashboardService);
   private userStore = inject(USER_STORE);
+  private taskStore = inject(TASK_STORE);
 
   private jwtHelper: JwtHelperService = new JwtHelperService();
   private subscription$: Subscription = new Subscription();
 
-  private tokenData!: any;
+  private userData!: any;
+
 
   menuOptions: IMenuOpctions[] = [
-    {options: 'home', backgroundColor: colors['menuDashboard'], isClicked: false, route: '/dashboard'}, 
+    {options: 'dashboard', backgroundColor: colors['menuDashboard'], isClicked: false, route: '/dashboard'}, 
     {options: 'tasks', backgroundColor: colors['menuDashboard'], isClicked: false, route: '/dashboard/tasks'},
     {options: 'calendar', backgroundColor: colors['menuDashboard'], isClicked: false, route: '/dashboard/calendar'},
     {options: 'pupils', backgroundColor: colors['menuDashboard'], isClicked: false, route: '/dashboard/pupils'},
@@ -62,24 +63,39 @@ export class DashboardComponent implements OnInit {
     {options: 'exit', backgroundColor: colors['menuDashboard'], isClicked: false, route: '/dashboard/exit'},
   ];
 
-  userData = this.userStore.select('id');
-
+  
 
   ngOnInit(): void {
 
-    // Menú HOME por defecto, con su color de fondo y estado de click.
+    console.info('AN-INFO: Ejecutando DashboardComponent');
+
+    // Menú dashboard por defecto, con su color de fondo y estado de click.
 
     this.menuOptions[0].backgroundColor = colors['menuDashboardClick'];
     this.menuOptions[0].isClicked = true;
 
+    this.userData = this.jwtHelper.decodeToken(this.userStore.select('id')());
 
-    console.info('AN-INFO: Ejecutando DashboardComponent');
+    // Obtener el ID del usuario desde el Resolve de la ruta.
 
-    console.log('an-LOG: Signals: ', this.userData());
-    console.log('an-LOG: Store: ', this.userStore.get());
-
-    this.tokenData = this.jwtHelper.decodeToken(this.userData()).email;
-    console.log('an-LOG: Email del token: ', this.tokenData);
+    this.subscription$.add(
+      this.route.data
+        .pipe(map(data => data['profile']))
+        .subscribe({
+          next: (data) => {
+            if (data !== null) {
+              this.setTaskStore(data);
+            } else {
+              this.registeringUserInTask();
+            }
+          },
+          error: (err) => {
+            console.error('an-ERROR: Error en el Resolve de ruta: ', err);
+          }
+        })
+    ); 
+    
+    // Saludando al usuario y escuchando mensajes del servidor.
 
     this.subscription$.add(
       this.dashboardService.greetings$()
@@ -108,6 +124,37 @@ export class DashboardComponent implements OnInit {
     )
 
   }
+
+  // Actualizar el Store de task.
+
+  setTaskStore(data: string): void {
+    this.taskStore.updateKey('id', data);
+  }
+
+  // Registrar el usuario en Tasks.
+
+  registeringUserInTask() {
+    console.log('an-LOG: Registrando usuario en tareas');
+    this.subscription$.add(
+      this.dashboardService.setUser$({
+        firstName: this.userData['firstName'],
+        nickName: this.userData['nickName'] || null,
+        email: this.userData['email'],
+      })
+      .pipe(map(result => result.data.setUser))
+      .subscribe({
+        next: (data) => {
+          this.setTaskStore(data._id);
+        },
+        error: (err) => {
+          console.error('an-ERROR: Error al registrar el usuario en tareas: ', err);
+        }
+      })
+    );
+       
+  }
+
+  // Eventos del menú Dashboard.
 
   onMouseOver(option: string): void {
     
